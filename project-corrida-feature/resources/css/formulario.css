@@ -1,0 +1,404 @@
+/* ------------------------------------- */
+/* 1. VARIÁVEIS DE CORES (Paleta)         */
+/* ------------------------------------- */
+:root {
+    /* Cores da Identidade Visual */
+    --color-primary: #FF5722;   /* Laranja Vibrante - Representa energia, terra avermelhada, o CTA. */
+    --color-secondary: #004D40; /* Verde Escuro - Representa a mata, natureza, estabilidade. */
+    --color-background: #F4F4F4;/* Fundo Claro - Limpo, neutro. */
+    --color-text: #333333;      /* Texto Escuro - Alta legibilidade. */
+    --color-white: #FFFFFF;     /* Branco para fundos ou textos contrastantes. */
+    
+    /* Fontes */
+    --font-primary: 'Arial', sans-serif;
+}
+
+/* ------------------------------------- */
+/* 2. RESET BÁSICO E ESTILOS GERAIS      */
+/* ------------------------------------- */
+* {
+    /* Remove margens e preenchimentos padrão do navegador */
+    margin: 0;
+    padding: 0;
+    /* Inclui padding e border dentro do tamanho total do elemento */
+    box-sizing: border-box; 
+}
+
+body {
+    /* Aplica a cor de fundo e a fonte para todo o corpo da página */
+    background-color: var(--color-background);
+    color: var(--color-text);
+    font-family: var(--font-primary);
+    line-height: 1.6; /* Espaçamento entre linhas para melhor leitura */
+}
+
+/* ------------------------------------- */
+/* 3. ESTILIZAÇÃO DO CABEÇALHO (HEADER)  */
+/* ------------------------------------- */
+.main-header {
+    background-color: var(--color-secondary);
+    color: var(--color-white);
+    padding: 15px 5%; /* Preenchimento interno (cima/baixo e laterais) */
+    display: flex; /* Permite alinhar elementos internos em linha */
+    justify-content: space-between; /* Distribui espaço entre o título e o menu */
+    align-items: center; /* Alinha verticalmente os itens ao centro */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Sombra suave para destacar o cabeçalho */
+}
+
+.main-header h1 {
+    font-size: 1.5em;
+}
+
+/* 4. ESTILIZAÇÃO DA NAVEGAÇÃO (NAV) */
+nav ul {
+    list-style: none; /* Remove os pontos padrão da lista */
+    display: flex; /* Transforma a lista de vertical para horizontal */
+}
+
+nav ul li {
+    margin-left: 20px; /* Espaço entre os itens do menu */
+}
+
+nav ul li a {
+    color: var(--color-white); /* Cor do texto do link */
+    text-decoration: none; /* Remove o sublinhado padrão dos links */
+    font-weight: bold;
+    /* Transição suave para o efeito hover */
+    transition: color 0.3s ease; 
+}
+
+nav ul li a:hover {
+    color: var(--color-primary); /* Efeito ao passar o mouse: a cor muda para Laranja */
+}
+
+/* ------------------------------------- */
+/* 5. SEÇÃO PRINCIPAL (HERO)             */
+/* ------------------------------------- */
+.hero-section {
+    /* Altura da seção: 80% da altura visível da tela */
+    height: 80vh; 
+    /* Centraliza o conteúdo (texto e botão) */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    /* Exemplo: Fundo com imagem de montanha */
+    /* background: url('caminho/para/sua/imagem.jpg') no-repeat center center/cover; */
+    background-color: #333; /* Fundo escuro temporário */
+    color: var(--color-white); /* Texto branco para contraste */
+}
+
+.hero-content {
+    padding: 20px;
+}
+
+.hero-content h2 {
+    font-size: 2.5em;
+    margin-bottom: 10px;
+}
+
+/* ------------------------------------- */
+/* 6. BOTÃO CTA (Chamada para Ação)      */
+/* ------------------------------------- */
+.cta-button {
+    display: inline-block;
+    background-color: var(--color-primary); /* Usa o Laranja Vibrante */
+    color: var(--color-white);
+    text-decoration: none;
+    font-size: 1.2em;
+    font-weight: bold;
+    padding: 15px 30px;
+    margin-top: 20px;
+    border-radius: 5px; /* Bordas arredondadas */
+    /* Sombra para o botão saltar na tela */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    transition: background-color 0.3s ease;
+}
+
+.cta-button:hover {
+    background-color: #E64A19; /* Laranja um pouco mais escuro no hover */
+    transform: translateY(-2px); /* Efeito sutil de levantar */
+}
+
+/* ------------------------------------- */
+/* 7. RODAPÉ (FOOTER)                    */
+/* ------------------------------------- */
+.main-footer {
+    background-color: var(--color-secondary);
+    color: rgba(255, 255, 255, 0.8); /* Branco suave */
+    text-align: center;
+    padding: 20px 0;
+    font-size: 0.9em;
+}
+
+.main-footer .social-links a {
+    color: var(--color-white);
+    margin: 0 10px;
+    text-decoration: none;
+}
+/* 8. ESTILOS DE ESTRUTURA E CONTEÚDO    */
+/* ------------------------------------- */
+
+/* Define a largura máxima do conteúdo e centraliza */
+.container {
+    max-width: 1200px;
+    margin: 0 auto; /* Centraliza o elemento horizontalmente */
+    padding: 0 20px;
+}
+
+/* Adiciona padding (espaçamento) no topo e na base das seções */
+.section-padding {
+    padding: 80px 0;
+    text-align: center; /* Centraliza o texto dentro da seção */
+}
+
+.section-padding h3 {
+    font-size: 2em;
+    margin-bottom: 10px;
+    color: var(--color-primary); /* Usa o Laranja Vibrante */
+}
+
+.section-intro {
+    font-size: 1.2em;
+    margin-bottom: 40px;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* ------------------------------------- */
+/* 9. LAYOUT GRID (ITENS DE DESTAQUE)    */
+/* ------------------------------------- */
+.feature-grid {
+    display: flex; /* Usando Flexbox para alinhar os itens lado a lado */
+    gap: 30px; /* Espaço entre os itens */
+    margin-bottom: 40px;
+    text-align: left; /* Alinha o texto dentro dos cards à esquerda */
+}
+
+.feature-item {
+    flex: 1; /* Permite que cada item ocupe uma parte igual do espaço disponível */
+    padding: 20px;
+    background-color: var(--color-white);
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.feature-item h4 {
+    color: var(--color-secondary); /* Usa o Verde Escuro */
+    margin-bottom: 15px;
+}
+
+/* ------------------------------------- */
+/* 10. CTA SECUNDÁRIO (cta-secondary)    */
+/* ------------------------------------- */
+.cta-secondary {
+    display: inline-block;
+    background-color: var(--color-secondary);
+    color: var(--color-white);
+    text-decoration: none;
+    font-size: 1.1em;
+    padding: 10px 20px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.cta-secondary:hover {
+    background-color: #002D27;
+}
+
+/* ------------------------------------- */
+/* 11. ESTILOS DE SEÇÃO ESCURA E INFORMAÇÕES */
+/* ------------------------------------- */
+
+/* Estilo para a Seção Escura (Contraste) */
+.section-dark {
+    background-color: var(--color-text); /* Cinza escuro/preto para o fundo */
+    color: var(--color-white);
+}
+
+.section-dark h3, .section-dark h4 {
+    color: var(--color-primary);
+}
+
+.info-block {
+    background-color: #444444; /* Fundo levemente mais claro para os blocos */
+    padding: 30px;
+    border-radius: 8px;
+    margin: 40px 0;
+    text-align: left;
+}
+
+.info-block h4 {
+    font-size: 1.8em;
+    margin-bottom: 20px;
+}
+
+.info-block ul, .info-block ol {
+    margin: 15px 0 15px 20px;
+}
+
+.info-block li {
+
+    margin-bottom: 8px;
+}
+
+/* ------------------------------------- */
+/* 12. PLACEHOLDER DO MAPA               */
+/* ------------------------------------- */
+.map-placeholder {
+    width: 100%;
+    height: 350px; /* Altura fixa para o espaço do mapa */
+    background-color: #666;
+    border: 3px solid var(--color-primary);
+    margin: 20px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.1em;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+/* ------------------------------------- */
+/* 13. LAYOUT DE DUAS COLUNAS (Regulamento) */
+/* ------------------------------------- */
+.reg-columns {
+    display: flex;
+    gap: 30px;
+    margin-top: 20px;
+}
+
+.reg-item {
+    flex: 1;
+    background-color: #555555;
+    padding: 20px;
+    border-radius: 6px;
+}
+
+.reg-item h5 {
+    color: var(--color-secondary);
+    font-size: 1.3em;
+    margin-bottom: 10px;
+}
+
+/* ------------------------------------- */
+/* 14. BOTÃO DE DOWNLOAD (btn-download)  */
+/* ------------------------------------- */
+.btn-download {
+    display: inline-block;
+    background-color: var(--color-secondary);
+    color: var(--color-white);
+    text-decoration: none;
+    font-weight: bold;
+    padding: 10px 25px;
+    margin-top: 20px;
+    border-radius: 5px;
+    transition: opacity 0.3s ease;
+}
+
+.btn-download:hover {
+    opacity: 0.8;
+}
+
+/* ------------------------------------- */
+/* 15. LAYOUT DE INSCRIÇÃO (Formulário + Sidebar) */
+/* ------------------------------------- */
+.registration-layout {
+    display: flex;
+    gap: 40px;
+    margin-top: 40px;
+    text-align: left;
+}
+
+/* ------------------------------------- */
+/* 16. ESTILOS DO FORMULÁRIO             */
+/* ------------------------------------- */
+.registration-form {
+    flex: 2; /* O formulário ocupa mais espaço (2 partes) */
+    background-color: var(--color-white);
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.registration-form h4 {
+    color: var(--color-secondary);
+    margin-bottom: 25px;
+    font-size: 1.5em;
+    border-bottom: 2px solid #EEE;
+    padding-bottom: 10px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block; /* Garante que o label fique acima do input */
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: var(--color-text);
+}
+
+.registration-form input[type="text"],
+.registration-form input[type="email"],
+.registration-form input[type="date"],
+.registration-form select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #CCC;
+    border-radius: 4px;
+    font-size: 1em;
+    transition: border-color 0.3s;
+}
+
+.registration-form input:focus,
+.registration-form select:focus {
+    border-color: var(--color-primary); /* Destaca o campo ativo */
+    outline: none;
+}
+
+.checkbox-group {
+    display: flex;
+    align-items: center;
+    margin: 20px 0;
+}
+
+.checkbox-group input {
+    margin-right: 10px;
+}
+
+.form-note {
+    font-style: italic;
+    font-size: 0.9em;
+    margin-top: 15px;
+    text-align: center;
+}
+
+/* ------------------------------------- */
+/* 17. SIDEBAR DE INFORMAÇÕES            */
+/* ------------------------------------- */
+.reg-info-sidebar {
+    flex: 1; /* A barra lateral ocupa 1 parte do espaço */
+    padding: 20px;
+    background-color: #EEE;
+    border-radius: 8px;
+    height: fit-content; /* Ajusta a altura ao conteúdo */
+}
+
+.reg-info-sidebar h4 {
+    color: var(--color-primary);
+    margin-bottom: 15px;
+    font-size: 1.3em;
+}
+
+.price-list, .kit-list {
+    list-style-type: none;
+    padding-left: 0;
+    margin-bottom: 25px;
+}
+
+.price-list li, .kit-list li {
+    padding: 8px 0;
+    border-bottom: 1px dashed #DDD;
+}
