@@ -8,14 +8,8 @@ Plataforma web completa para gerenciamento de inscrições do evento, com formul
 
 ## 🎨 Layout
 
-![Hero Section](public/screenshots/hero.png)
-*Hero section com chamada para ação*
-
-![Formulário Multi-Etapas](public/screenshots/formulario.png)
-*Formulário de inscrição em 3 etapas com indicador de progresso*
-
-![Detalhes da Prova](public/screenshots/detalhes.png)
-*Seção com percurso, regulamento e cronograma*
+### Hero Section
+Seção de abertura com visual imersivo, gradientes e chamada para ação destacada.
 
 ### Formulário Multi-Etapas
 - **Etapa 1** — Dados pessoais (nome, email, telefone, CPF, data de nascimento)
