@@ -13,6 +13,8 @@ class Cadastro extends Model
         'telefone',
         'dataNascimento',
         'categoria',
+        'percurso',
+        'sexo',
         'status'
     ];
 }

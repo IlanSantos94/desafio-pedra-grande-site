@@ -15,3 +15,8 @@ Route::get('/cadastros', [\App\Http\Controllers\CadastroController::class, 'inde
 
 // Nova Rota para o Webhook do PagBank
 Route::post('/webhook/pagbank', [\App\Http\Controllers\CadastroController::class, 'webhook']);
+
+// Rota de teste simples (sem controller)
+Route::get('/teste-rapido', function() {
+    return 'O arquivo de rotas está funcionando!';
+});

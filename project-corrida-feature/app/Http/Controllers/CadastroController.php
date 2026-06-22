@@ -16,17 +16,34 @@ class CadastroController extends Controller
 
     public function store(Request $request)
     {
-        $data = $request->validate([
+        // 1. Validação (Removido o 'unique' para permitir re-inscrição de pendentes)
+        $validado = $request->validate([
             'nome' => 'required|string|max:255',
-            'email' => 'required|email|unique:cadastros',
-            'cpf' => 'required|string|size:11|unique:cadastros', 
+            'email' => 'required|email',
+            'cpf' => 'required|string|size:11', 
             'telefone' => 'required|string|max:20',
             'dataNascimento' => 'required|string|max:255',
-            'categoria' => 'required|string|max:20',
+            'sexo' => 'required|string|max:1', // Ajustado para bater com o banco (M/F)
+            'percurso' => 'required|string|max:255',
+            'categoria' => 'required|string|max:255',
         ]);
-        
-        $cadastro = Cadastro::create($data);
-        $valorInscricao = 100; // R$ 1,00
+
+        // 2. Lógica de Upsert (Evitar duplicidade e permitir nova tentativa de pagamento)
+        $cadastro = Cadastro::where('cpf', $validado['cpf'])->first();
+
+        if ($cadastro) {
+            if ($cadastro->status === 'pago') {
+                return response()->json(['error' => 'Este CPF já possui uma inscrição confirmada e paga.'], 422);
+            }
+            // Atualiza os dados se estiver pendente (caso queira mudar percurso/email antes de pagar)
+            $cadastro->update($validado);
+        } else {
+            // Cria novo se não existir
+            $validado['status'] = 'pendente';
+            $cadastro = Cadastro::create($validado);
+        }
+
+        $valorInscricao = 10000; // R$ 100,00 (PagBank usa centavos)
 
         try {
             $telefoneLimpo = preg_replace('/\D/', '', $cadastro->telefone);
@@ -35,20 +52,22 @@ class CadastroController extends Controller
             $areaCode = substr($telefoneLimpo, 0, 2);
             $number = substr($telefoneLimpo, 2);
 
-            $baseUrl = "https://unideaed-wastable-rudolf.ngrok-free.dev";
+            $baseUrl = env('PAGBANK_NOTIFICATION_URL', env('APP_URL'));
 
             $response = Http::withHeaders([
                 'Authorization' => 'Bearer ' . env('PAGBANK_TOKEN'),
                 'Content-Type' => 'application/json',
                 'Accept' => 'application/json',
             ])->post(env('PAGBANK_URL') . '/checkouts', [
+                "reference_id" => "ID_" . $cadastro->id,
                 "customer" => [
                     "name" => $cadastro->nome,
                     "email" => $cadastro->email,
                     "tax_id" => $cpfLimpo,
                     "phones" => [
                         [
-                            "area_code" => $areaCode,
+                            "country" => "55",
+                            "area" => $areaCode,
                             "number" => $number,
                             "type" => "MOBILE"
                         ]
@@ -61,7 +80,6 @@ class CadastroController extends Controller
                         "unit_amount" => $valorInscricao 
                     ]
                 ],
-                "reference_id" => "ID_" . $cadastro->id,
                 "payment_methods" => [
                     ["type" => "CREDIT_CARD"],
                     ["type" => "PIX"],
@@ -75,20 +93,20 @@ class CadastroController extends Controller
 
             if (!$response->successful()) {
                 Log::error('Erro PagBank: ' . $response->body());
-                return response()->json(['error' => 'Erro PagBank'], 400);
+                return response()->json(['error' => 'Ocorreu um erro ao gerar o link de pagamento. Tente novamente.'], 400);
             }
 
             $pagbankData = $response->json();
             $paymentUrl = collect($pagbankData['links'])->where('rel', 'PAY')->first()['href'];
 
             return response()->json([
-                'message' => 'Cadastro realizado com sucesso!',
+                'message' => 'Inscrição processada com sucesso!',
                 'payment_url' => $paymentUrl
             ], 201);
 
         } catch (\Exception $e) {
             Log::error('Erro Interno: ' . $e->getMessage());
-            return response()->json(['error' => 'Erro interno'], 500);
+            return response()->json(['error' => 'Erro interno no servidor.'], 500);
         }
     }
 
@@ -97,25 +115,23 @@ class CadastroController extends Controller
         $dados = $request->all();
         Log::info("--- NOVO WEBHOOK RECEBIDO ---");
 
-        // 1. Tenta pegar o Reference ID
         $referenceId = $dados['reference_id'] ?? null;
-
-        // 2. Busca o Status (Pode estar na raiz ou dentro de charges)
         $statusPagamento = $dados['status'] ?? null;
         
+        // Verifica status dentro do array de charges (comum no PagBank moderno)
         if (!$statusPagamento && isset($dados['charges'][0]['status'])) {
             $statusPagamento = $dados['charges'][0]['status'];
         }
 
-        // 3. Caso seja notificação antiga (notificationCode)
+        // Caso de notificação por XML/V3
         if (isset($dados['notificationCode'])) {
             $response = Http::get(env('PAGBANK_URL') . '/v3/transactions/notifications/' . $dados['notificationCode'], [
                 'email' => env('PAGBANK_EMAIL'),
                 'token' => env('PAGBANK_TOKEN'),
             ]);
             if ($response->successful()) {
-                $dadosXML = $response->xml() ?: $response->json(); 
-                $referenceId = $dadosXML['reference'] ?? $dadosXML['reference_id'] ?? null;
+                $dadosXML = $response->xml(); 
+                $referenceId = $dadosXML['reference'] ?? null;
                 $statusPagamento = $this->converterStatus($dadosXML['status'] ?? null);
             }
         }
@@ -126,13 +142,12 @@ class CadastroController extends Controller
             $idInscricao = str_replace('ID_', '', $referenceId);
             $atleta = Cadastro::find($idInscricao);
 
+            // Status que consideramos como "Pago"
             $statusAprovados = ['PAID', 'COMPLETED', 'AUTHORIZED', '3', 3];
 
             if ($atleta && in_array($statusPagamento, $statusAprovados)) {
                 $atleta->update(['status' => 'pago']);
                 Log::info("✅ SUCESSO: Atleta " . $atleta->nome . " atualizado para PAGO.");
-            } else {
-                Log::warning("⚠️ AVISO: Status não é de aprovação ou atleta não encontrado. Status: " . ($statusPagamento ?? 'NULO'));
             }
         }
 

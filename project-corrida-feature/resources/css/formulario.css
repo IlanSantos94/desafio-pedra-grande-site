@@ -1,404 +1,822 @@
-/* ------------------------------------- */
-/* 1. VARIÁVEIS DE CORES (Paleta)         */
-/* ------------------------------------- */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Bebas+Neue&family=Oswald:wght@400;500;600;700&display=swap');
+
 :root {
-    /* Cores da Identidade Visual */
-    --color-primary: #FF5722;   /* Laranja Vibrante - Representa energia, terra avermelhada, o CTA. */
-    --color-secondary: #004D40; /* Verde Escuro - Representa a mata, natureza, estabilidade. */
-    --color-background: #F4F4F4;/* Fundo Claro - Limpo, neutro. */
-    --color-text: #333333;      /* Texto Escuro - Alta legibilidade. */
-    --color-white: #FFFFFF;     /* Branco para fundos ou textos contrastantes. */
-    
-    /* Fontes */
-    --font-primary: 'Arial', sans-serif;
+    --primary: #E85D04;
+    --primary-dark: #D45200;
+    --primary-light: #FF8C2E;
+    --secondary: #1A3C34;
+    --secondary-light: #2D6A58;
+    --accent: #FAA307;
+    --dark: #0F1A14;
+    --dark-80: #1A2E24;
+    --text: #1F2937;
+    --text-light: #6B7280;
+    --bg: #F8F6F3;
+    --bg-alt: #EFEBE6;
+    --white: #FFFFFF;
+    --success: #10B981;
+    --error: #EF4444;
+    --shadow-sm: 0 1px 3px rgba(0,0,0,.08);
+    --shadow-md: 0 4px 20px rgba(0,0,0,.1);
+    --shadow-lg: 0 8px 40px rgba(0,0,0,.15);
+    --shadow-glow: 0 0 30px rgba(232,93,4,.3);
+    --radius: 12px;
+    --radius-lg: 20px;
+    --transition: .3s cubic-bezier(.4,0,.2,1);
 }
 
-/* ------------------------------------- */
-/* 2. RESET BÁSICO E ESTILOS GERAIS      */
-/* ------------------------------------- */
-* {
-    /* Remove margens e preenchimentos padrão do navegador */
-    margin: 0;
-    padding: 0;
-    /* Inclui padding e border dentro do tamanho total do elemento */
-    box-sizing: border-box; 
-}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
 
 body {
-    /* Aplica a cor de fundo e a fonte para todo o corpo da página */
-    background-color: var(--color-background);
-    color: var(--color-text);
-    font-family: var(--font-primary);
-    line-height: 1.6; /* Espaçamento entre linhas para melhor leitura */
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    overflow-x: hidden;
 }
 
-/* ------------------------------------- */
-/* 3. ESTILIZAÇÃO DO CABEÇALHO (HEADER)  */
-/* ------------------------------------- */
+/* ===== HEADER ===== */
 .main-header {
-    background-color: var(--color-secondary);
-    color: var(--color-white);
-    padding: 15px 5%; /* Preenchimento interno (cima/baixo e laterais) */
-    display: flex; /* Permite alinhar elementos internos em linha */
-    justify-content: space-between; /* Distribui espaço entre o título e o menu */
-    align-items: center; /* Alinha verticalmente os itens ao centro */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Sombra suave para destacar o cabeçalho */
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    background: rgba(15, 26, 20, .92);
+    backdrop-filter: blur(12px);
+    padding: 0 5%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 70px;
+    border-bottom: 1px solid rgba(255,255,255,.08);
+    transition: var(--transition);
 }
+
+.main-header.scrolled { background: rgba(15, 26, 20, .98); }
 
 .main-header h1 {
-    font-size: 1.5em;
+    font-family: 'Oswald', sans-serif;
+    font-size: 1.4em;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
-/* 4. ESTILIZAÇÃO DA NAVEGAÇÃO (NAV) */
 nav ul {
-    list-style: none; /* Remove os pontos padrão da lista */
-    display: flex; /* Transforma a lista de vertical para horizontal */
-}
-
-nav ul li {
-    margin-left: 20px; /* Espaço entre os itens do menu */
+    list-style: none;
+    display: flex;
+    gap: 8px;
 }
 
 nav ul li a {
-    color: var(--color-white); /* Cor do texto do link */
-    text-decoration: none; /* Remove o sublinhado padrão dos links */
-    font-weight: bold;
-    /* Transição suave para o efeito hover */
-    transition: color 0.3s ease; 
+    color: rgba(255,255,255,.7);
+    text-decoration: none;
+    font-size: .85em;
+    font-weight: 500;
+    padding: 8px 16px;
+    border-radius: 8px;
+    transition: var(--transition);
 }
 
 nav ul li a:hover {
-    color: var(--color-primary); /* Efeito ao passar o mouse: a cor muda para Laranja */
+    color: var(--white);
+    background: rgba(255,255,255,.08);
 }
 
-/* ------------------------------------- */
-/* 5. SEÇÃO PRINCIPAL (HERO)             */
-/* ------------------------------------- */
+/* ===== HERO ===== */
 .hero-section {
-    /* Altura da seção: 80% da altura visível da tela */
-    height: 80vh; 
-    /* Centraliza o conteúdo (texto e botão) */
+    min-height: 100vh;
     display: flex;
-    justify-content: center;
     align-items: center;
-    text-align: center;
-    /* Exemplo: Fundo com imagem de montanha */
-    /* background: url('caminho/para/sua/imagem.jpg') no-repeat center center/cover; */
-    background-color: #333; /* Fundo escuro temporário */
-    color: var(--color-white); /* Texto branco para contraste */
+    justify-content: center;
+    position: relative;
+    background: linear-gradient(135deg, var(--dark) 0%, var(--dark-80) 50%, var(--secondary) 100%);
+    overflow: hidden;
+    padding: 100px 20px 60px;
+}
+
+.hero-section::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(ellipse at 20% 50%, rgba(232,93,4,.15) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 20%, rgba(250,163,7,.1) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 80%, rgba(45,106,88,.2) 0%, transparent 50%);
+}
+
+.hero-section::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 200px;
+    background: linear-gradient(to top, var(--bg) 0%, transparent 100%);
 }
 
 .hero-content {
-    padding: 20px;
-}
-
-.hero-content h2 {
-    font-size: 2.5em;
-    margin-bottom: 10px;
-}
-
-/* ------------------------------------- */
-/* 6. BOTÃO CTA (Chamada para Ação)      */
-/* ------------------------------------- */
-.cta-button {
-    display: inline-block;
-    background-color: var(--color-primary); /* Usa o Laranja Vibrante */
-    color: var(--color-white);
-    text-decoration: none;
-    font-size: 1.2em;
-    font-weight: bold;
-    padding: 15px 30px;
-    margin-top: 20px;
-    border-radius: 5px; /* Bordas arredondadas */
-    /* Sombra para o botão saltar na tela */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-    transition: background-color 0.3s ease;
-}
-
-.cta-button:hover {
-    background-color: #E64A19; /* Laranja um pouco mais escuro no hover */
-    transform: translateY(-2px); /* Efeito sutil de levantar */
-}
-
-/* ------------------------------------- */
-/* 7. RODAPÉ (FOOTER)                    */
-/* ------------------------------------- */
-.main-footer {
-    background-color: var(--color-secondary);
-    color: rgba(255, 255, 255, 0.8); /* Branco suave */
+    position: relative;
+    z-index: 2;
     text-align: center;
-    padding: 20px 0;
-    font-size: 0.9em;
-}
-
-.main-footer .social-links a {
-    color: var(--color-white);
-    margin: 0 10px;
-    text-decoration: none;
-}
-/* 8. ESTILOS DE ESTRUTURA E CONTEÚDO    */
-/* ------------------------------------- */
-
-/* Define a largura máxima do conteúdo e centraliza */
-.container {
-    max-width: 1200px;
-    margin: 0 auto; /* Centraliza o elemento horizontalmente */
-    padding: 0 20px;
-}
-
-/* Adiciona padding (espaçamento) no topo e na base das seções */
-.section-padding {
-    padding: 80px 0;
-    text-align: center; /* Centraliza o texto dentro da seção */
-}
-
-.section-padding h3 {
-    font-size: 2em;
-    margin-bottom: 10px;
-    color: var(--color-primary); /* Usa o Laranja Vibrante */
-}
-
-.section-intro {
-    font-size: 1.2em;
-    margin-bottom: 40px;
     max-width: 800px;
-    margin-left: auto;
-    margin-right: auto;
 }
 
-/* ------------------------------------- */
-/* 9. LAYOUT GRID (ITENS DE DESTAQUE)    */
-/* ------------------------------------- */
-.feature-grid {
-    display: flex; /* Usando Flexbox para alinhar os itens lado a lado */
-    gap: 30px; /* Espaço entre os itens */
-    margin-bottom: 40px;
-    text-align: left; /* Alinha o texto dentro dos cards à esquerda */
-}
-
-.feature-item {
-    flex: 1; /* Permite que cada item ocupe uma parte igual do espaço disponível */
-    padding: 20px;
-    background-color: var(--color-white);
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-.feature-item h4 {
-    color: var(--color-secondary); /* Usa o Verde Escuro */
-    margin-bottom: 15px;
-}
-
-/* ------------------------------------- */
-/* 10. CTA SECUNDÁRIO (cta-secondary)    */
-/* ------------------------------------- */
-.cta-secondary {
+.hero-badge {
     display: inline-block;
-    background-color: var(--color-secondary);
-    color: var(--color-white);
-    text-decoration: none;
-    font-size: 1.1em;
-    padding: 10px 20px;
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
-}
-
-.cta-secondary:hover {
-    background-color: #002D27;
-}
-
-/* ------------------------------------- */
-/* 11. ESTILOS DE SEÇÃO ESCURA E INFORMAÇÕES */
-/* ------------------------------------- */
-
-/* Estilo para a Seção Escura (Contraste) */
-.section-dark {
-    background-color: var(--color-text); /* Cinza escuro/preto para o fundo */
-    color: var(--color-white);
-}
-
-.section-dark h3, .section-dark h4 {
-    color: var(--color-primary);
-}
-
-.info-block {
-    background-color: #444444; /* Fundo levemente mais claro para os blocos */
-    padding: 30px;
-    border-radius: 8px;
-    margin: 40px 0;
-    text-align: left;
-}
-
-.info-block h4 {
-    font-size: 1.8em;
+    background: rgba(232,93,4,.15);
+    border: 1px solid rgba(232,93,4,.3);
+    color: var(--primary);
+    font-size: .8em;
+    font-weight: 600;
+    padding: 6px 20px;
+    border-radius: 50px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
     margin-bottom: 20px;
 }
 
-.info-block ul, .info-block ol {
-    margin: 15px 0 15px 20px;
+.hero-content h2 {
+    font-family: 'Oswald', sans-serif;
+    font-size: clamp(2.5em, 8vw, 5em);
+    font-weight: 700;
+    line-height: 1.1;
+    color: var(--white);
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
-.info-block li {
-
-    margin-bottom: 8px;
+.hero-content h2 span {
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
-/* ------------------------------------- */
-/* 12. PLACEHOLDER DO MAPA               */
-/* ------------------------------------- */
-.map-placeholder {
-    width: 100%;
-    height: 350px; /* Altura fixa para o espaço do mapa */
-    background-color: #666;
-    border: 3px solid var(--color-primary);
-    margin: 20px 0;
-    display: flex;
-    justify-content: center;
+.hero-content p {
+    font-size: 1.15em;
+    color: rgba(255,255,255,.6);
+    margin: 20px 0 30px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    font-weight: 300;
+    line-height: 1.8;
+}
+
+.cta-button {
+    display: inline-flex;
     align-items: center;
-    font-size: 1.1em;
-    color: rgba(255, 255, 255, 0.7);
-}
-
-/* ------------------------------------- */
-/* 13. LAYOUT DE DUAS COLUNAS (Regulamento) */
-/* ------------------------------------- */
-.reg-columns {
-    display: flex;
-    gap: 30px;
-    margin-top: 20px;
-}
-
-.reg-item {
-    flex: 1;
-    background-color: #555555;
-    padding: 20px;
-    border-radius: 6px;
-}
-
-.reg-item h5 {
-    color: var(--color-secondary);
-    font-size: 1.3em;
-    margin-bottom: 10px;
-}
-
-/* ------------------------------------- */
-/* 14. BOTÃO DE DOWNLOAD (btn-download)  */
-/* ------------------------------------- */
-.btn-download {
-    display: inline-block;
-    background-color: var(--color-secondary);
-    color: var(--color-white);
+    gap: 10px;
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    color: var(--white);
     text-decoration: none;
-    font-weight: bold;
-    padding: 10px 25px;
-    margin-top: 20px;
-    border-radius: 5px;
-    transition: opacity 0.3s ease;
+    font-size: 1em;
+    font-weight: 700;
+    padding: 16px 36px;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: var(--transition);
+    box-shadow: var(--shadow-glow);
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
-.btn-download:hover {
-    opacity: 0.8;
+.cta-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 40px rgba(232,93,4,.4);
 }
 
-/* ------------------------------------- */
-/* 15. LAYOUT DE INSCRIÇÃO (Formulário + Sidebar) */
-/* ------------------------------------- */
-.registration-layout {
-    display: flex;
-    gap: 40px;
-    margin-top: 40px;
-    text-align: left;
+.cta-button:disabled {
+    opacity: .5;
+    cursor: not-allowed;
+    transform: none !important;
 }
 
-/* ------------------------------------- */
-/* 16. ESTILOS DO FORMULÁRIO             */
-/* ------------------------------------- */
-.registration-form {
-    flex: 2; /* O formulário ocupa mais espaço (2 partes) */
-    background-color: var(--color-white);
-    padding: 30px;
-    border-radius: 8px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+.cta-button svg { width: 20px; height: 20px; fill: currentColor; }
+
+.hero-scroll {
+    position: absolute;
+    bottom: 80px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: rgba(255,255,255,.3);
+    font-size: .75em;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    animation: bounce-down 2s infinite;
+    z-index: 2;
+    text-decoration: none;
 }
 
-.registration-form h4 {
-    color: var(--color-secondary);
-    margin-bottom: 25px;
-    font-size: 1.5em;
-    border-bottom: 2px solid #EEE;
-    padding-bottom: 10px;
+@keyframes bounce-down {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(10px); }
 }
 
-.form-group {
+/* ===== SECTIONS ===== */
+.container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+
+.section-padding { padding: 100px 0; text-align: center; }
+
+.section-padding h3 {
+    font-family: 'Oswald', sans-serif;
+    font-size: clamp(1.8em, 4vw, 2.8em);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
     margin-bottom: 15px;
 }
 
-.form-group label {
-    display: block; /* Garante que o label fique acima do input */
+.section-padding h3 span { color: var(--primary); }
+
+.section-intro {
+    font-size: 1.05em;
+    color: var(--text-light);
+    max-width: 700px;
+    margin: 0 auto 50px;
+    line-height: 1.8;
+}
+
+/* ===== FEATURE GRID ===== */
+.feature-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
+    margin-bottom: 50px;
+}
+
+.feature-item {
+    background: var(--white);
+    padding: 35px 30px;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+    text-align: left;
+    border: 1px solid rgba(0,0,0,.04);
+    transition: var(--transition);
+    position: relative;
+    overflow: hidden;
+}
+
+.feature-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--primary), var(--accent));
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: var(--transition);
+}
+
+.feature-item:hover::before { transform: scaleX(1); }
+
+.feature-item:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-md);
+}
+
+.feature-icon {
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(135deg, rgba(232,93,4,.1), rgba(250,163,7,.1));
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4em;
+    margin-bottom: 18px;
+}
+
+.feature-item h4 {
+    font-family: 'Oswald', sans-serif;
+    color: var(--secondary);
+    font-size: 1.2em;
+    font-weight: 600;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+}
+
+.feature-item p {
+    color: var(--text-light);
+    font-size: .92em;
+    line-height: 1.7;
+}
+
+.cta-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: transparent;
+    color: var(--secondary);
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 1em;
+    border: 2px solid var(--secondary);
+    padding: 12px 30px;
+    border-radius: 50px;
+    transition: var(--transition);
+}
+
+.cta-secondary:hover {
+    background: var(--secondary);
+    color: var(--white);
+}
+
+/* ===== SECTION DARK ===== */
+.section-dark {
+    background: linear-gradient(135deg, var(--dark) 0%, var(--secondary) 100%);
+    color: var(--white);
+}
+
+.section-dark h3 { color: var(--white); }
+.section-dark .section-intro { color: rgba(255,255,255,.6); }
+
+/* ===== INFO BLOCKS ===== */
+.info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 25px;
+    margin-top: 40px;
+}
+
+.info-block {
+    background: rgba(255,255,255,.05);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,.08);
+    padding: 30px;
+    border-radius: var(--radius);
+    text-align: left;
+}
+
+.info-block h4, .info-block h5, .info-block p, .info-block ul, .info-block ol { text-align: left; }
+
+.info-block.full { grid-column: 1 / -1; }
+
+.info-block h4 {
+    font-family: 'Oswald', sans-serif;
+    font-size: 1.3em;
+    margin-bottom: 15px;
+    color: var(--accent);
+}
+
+.info-block p { color: rgba(255,255,255,.7); font-size: .95em; line-height: 1.7; }
+.info-block ul, .info-block ol { margin: 15px 0 15px 20px; color: rgba(255,255,255,.7); }
+.info-block li { margin-bottom: 8px; font-size: .92em; }
+
+.info-block h5 {
+    color: var(--primary);
+    font-size: 1.05em;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+}
+
+.map-placeholder {
+    width: 100%;
+    height: 250px;
+    background: rgba(255,255,255,.05);
+    border: 2px dashed rgba(255,255,255,.15);
+    border-radius: var(--radius);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255,255,255,.3);
+    font-size: .9em;
+    margin: 20px 0;
+}
+
+.btn-download {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255,255,255,.1);
+    color: var(--white);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: .9em;
+    padding: 10px 24px;
+    border-radius: 8px;
+    border: 1px solid rgba(255,255,255,.15);
+    transition: var(--transition);
+}
+
+.btn-download:hover { background: rgba(255,255,255,.15); }
+
+/* ===== REGISTRATION LAYOUT ===== */
+.registration-layout {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: 30px;
+    margin-top: 40px;
+    align-items: start;
+}
+
+/* ===== STEP INDICATOR ===== */
+.step-indicator {
+    display: flex;
+    justify-content: center;
+    gap: 0;
+    margin-bottom: 35px;
+    position: relative;
+}
+
+.step-indicator::before {
+    content: '';
+    position: absolute;
+    top: 15px;
+    left: 10%;
+    right: 10%;
+    height: 2px;
+    background: #E5E7EB;
+    z-index: 0;
+}
+
+.step-indicator .step-progress {
+    position: absolute;
+    top: 15px;
+    left: 10%;
+    height: 2px;
+    background: linear-gradient(90deg, var(--primary), var(--accent));
+    z-index: 1;
+    transition: width .5s cubic-bezier(.4,0,.2,1);
+}
+
+.step-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    position: relative;
+    z-index: 2;
+    flex: 1;
+}
+
+.step-circle {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--white);
+    border: 2px solid #D1D5DB;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: .8em;
+    font-weight: 700;
+    color: var(--text-light);
+    transition: var(--transition);
+}
+
+.step-item.active .step-circle {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: var(--white);
+    box-shadow: 0 0 0 4px rgba(232,93,4,.15);
+}
+
+.step-item.done .step-circle {
+    background: var(--success);
+    border-color: var(--success);
+    color: var(--white);
+}
+
+.step-label {
+    font-size: .72em;
+    font-weight: 600;
+    color: var(--text-light);
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    text-align: center;
+}
+
+.step-item.active .step-label { color: var(--primary); }
+.step-item.done .step-label { color: var(--success); }
+
+/* ===== FORM ===== */
+.registration-form {
+    background: var(--white);
+    padding: 35px;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+    border: 1px solid rgba(0,0,0,.04);
+}
+
+.form-step { display: none; animation: fade-step .4s ease; }
+.form-step.active { display: block; }
+
+@keyframes fade-step {
+    from { opacity: 0; transform: translateX(20px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+.registration-form h4 {
+    font-family: 'Oswald', sans-serif;
+    font-size: 1.3em;
+    color: var(--secondary);
     margin-bottom: 5px;
-    font-weight: bold;
-    color: var(--color-text);
+    text-transform: uppercase;
+    letter-spacing: .5px;
+}
+
+.form-step-desc {
+    font-size: .85em;
+    color: var(--text-light);
+    margin-bottom: 25px;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.form-group {
+    margin-bottom: 18px;
+}
+
+.form-group label {
+    display: block;
+    font-size: .82em;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 6px;
+}
+
+.form-group label .required {
+    color: var(--error);
+    margin-left: 2px;
 }
 
 .registration-form input[type="text"],
 .registration-form input[type="email"],
 .registration-form input[type="date"],
+.registration-form input[type="tel"],
 .registration-form select {
     width: 100%;
-    padding: 10px;
-    border: 1px solid #CCC;
-    border-radius: 4px;
-    font-size: 1em;
-    transition: border-color 0.3s;
+    padding: 12px 14px;
+    border: 2px solid #E5E7EB;
+    border-radius: 10px;
+    font-size: .92em;
+    font-family: 'Inter', sans-serif;
+    color: var(--text);
+    background: var(--bg);
+    transition: var(--transition);
+    outline: none;
 }
 
 .registration-form input:focus,
 .registration-form select:focus {
-    border-color: var(--color-primary); /* Destaca o campo ativo */
-    outline: none;
+    border-color: var(--primary);
+    background: var(--white);
+    box-shadow: 0 0 0 4px rgba(232,93,4,.08);
 }
+
+.registration-form input.error,
+.registration-form select.error {
+    border-color: var(--error);
+    box-shadow: 0 0 0 4px rgba(239,68,68,.08);
+}
+
+.registration-form input::placeholder { color: #9CA3AF; }
+
+/* ===== FORM BUTTONS ===== */
+.form-buttons {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    margin-top: 25px;
+    padding-top: 20px;
+    border-top: 1px solid #F3F4F6;
+}
+
+.btn-prev {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 28px;
+    background: var(--bg);
+    color: var(--text);
+    border: 2px solid #E5E7EB;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: .9em;
+    cursor: pointer;
+    transition: var(--transition);
+    font-family: 'Inter', sans-serif;
+}
+
+.btn-prev:hover { border-color: var(--text-light); background: #F3F4F6; }
+
+.btn-next {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 28px;
+    background: var(--primary);
+    color: var(--white);
+    border: none;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: .9em;
+    cursor: pointer;
+    transition: var(--transition);
+    font-family: 'Inter', sans-serif;
+    margin-left: auto;
+}
+
+.btn-next:hover { background: var(--primary-dark); transform: translateY(-2px); }
+
+.btn-submit {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 36px;
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    color: var(--white);
+    border: none;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 1em;
+    cursor: pointer;
+    transition: var(--transition);
+    font-family: 'Inter', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    width: 100%;
+    justify-content: center;
+}
+
+.btn-submit:hover { transform: translateY(-2px); box-shadow: var(--shadow-glow); }
+.btn-submit:disabled { opacity: .5; cursor: not-allowed; transform: none !important; }
 
 .checkbox-group {
     display: flex;
-    align-items: center;
-    margin: 20px 0;
+    align-items: flex-start;
+    gap: 10px;
+    margin: 10px 0;
 }
 
-.checkbox-group input {
-    margin-right: 10px;
+.checkbox-group input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    margin-top: 3px;
+    accent-color: var(--primary);
+    cursor: pointer;
+    flex-shrink: 0;
 }
+
+.checkbox-group label { font-size: .85em; margin-bottom: 0; cursor: pointer; }
+.checkbox-group label a { color: var(--primary); text-decoration: underline; }
 
 .form-note {
-    font-style: italic;
-    font-size: 0.9em;
-    margin-top: 15px;
+    font-size: .8em;
+    color: var(--text-light);
     text-align: center;
+    margin-top: 15px;
+    font-style: italic;
 }
 
-/* ------------------------------------- */
-/* 17. SIDEBAR DE INFORMAÇÕES            */
-/* ------------------------------------- */
+/* ===== SIDEBAR ===== */
 .reg-info-sidebar {
-    flex: 1; /* A barra lateral ocupa 1 parte do espaço */
-    padding: 20px;
-    background-color: #EEE;
-    border-radius: 8px;
-    height: fit-content; /* Ajusta a altura ao conteúdo */
+    background: var(--white);
+    padding: 30px;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+    border: 1px solid rgba(0,0,0,.04);
+    position: sticky;
+    top: 90px;
 }
 
-.reg-info-sidebar h4 {
-    color: var(--color-primary);
-    margin-bottom: 15px;
+.sidebar-header {
+    text-align: center;
+    padding-bottom: 20px;
+    border-bottom: 2px solid var(--bg);
+    margin-bottom: 20px;
+}
+
+.sidebar-header h4 {
+    font-family: 'Oswald', sans-serif;
     font-size: 1.3em;
+    color: var(--secondary);
+    text-transform: uppercase;
+    letter-spacing: .5px;
+}
+
+.sidebar-header .price-highlight {
+    font-size: 2em;
+    font-weight: 900;
+    color: var(--primary);
+    margin-top: 10px;
+}
+
+.sidebar-header .price-highlight small {
+    font-size: .35em;
+    font-weight: 400;
+    color: var(--text-light);
+    display: block;
 }
 
 .price-list, .kit-list {
-    list-style-type: none;
-    padding-left: 0;
+    list-style: none;
     margin-bottom: 25px;
 }
 
-.price-list li, .kit-list li {
+.price-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px dashed #F3F4F6;
+    font-size: .88em;
+}
+
+.price-list li:last-child { border-bottom: none; }
+
+.price-list .lote-name { color: var(--text); font-weight: 500; }
+.price-list .lote-value { font-weight: 700; color: var(--secondary); }
+.price-list .lote-soldout { color: var(--error); font-weight: 600; font-size: .8em; }
+
+.kit-list li {
     padding: 8px 0;
-    border-bottom: 1px dashed #DDD;
+    font-size: .85em;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.kit-list li::before {
+    content: '✓';
+    color: var(--success);
+    font-weight: 700;
+}
+
+.sidebar-cta {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.sidebar-cta small {
+    font-size: .7em;
+    color: var(--text-light);
+}
+
+/* ===== FOOTER ===== */
+.main-footer {
+    background: var(--dark);
+    color: rgba(255,255,255,.6);
+    text-align: center;
+    padding: 40px 20px;
+    font-size: .85em;
+}
+
+.main-footer .social-links {
+    margin-top: 15px;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.main-footer .social-links a {
+    color: rgba(255,255,255,.5);
+    text-decoration: none;
+    transition: var(--transition);
+    font-size: .9em;
+}
+
+.main-footer .social-links a:hover { color: var(--primary); }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+    .main-header h1 { font-size: 1.1em; }
+    nav ul { gap: 4px; }
+    nav ul li a { font-size: .75em; padding: 6px 10px; }
+
+    .feature-grid { grid-template-columns: 1fr; }
+    .info-grid { grid-template-columns: 1fr; }
+    .registration-layout { grid-template-columns: 1fr; }
+
+    .form-row { grid-template-columns: 1fr; }
+
+    .registration-form { padding: 25px 20px; }
+    .reg-info-sidebar { position: static; }
+
+    .step-label { font-size: .65em; }
+    .step-indicator::before { left: 5%; right: 5%; }
+    .step-indicator .step-progress { left: 5%; }
+}
+
+@media (max-width: 480px) {
+    .section-padding { padding: 60px 0; }
+    .hero-section { min-height: 90vh; padding: 80px 20px 40px; }
+    .hero-content h2 { font-size: 2em; }
+    .form-buttons { flex-direction: column; }
+    .btn-next { margin-left: 0; }
 }
