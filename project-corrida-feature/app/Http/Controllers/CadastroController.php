@@ -9,6 +9,10 @@ use Illuminate\Support\Facades\Log;
 
 class CadastroController extends Controller
 {
+    // ATENÇÃO (pendente): esta rota devolve CPF, e-mail, telefone e data de
+    // nascimento de todas as inscrições sem nenhuma autenticação. Ela foi mantida
+    // de propósito porque vai servir ao painel admin, mas precisa ser protegida
+    // por middleware de autenticação/autorização antes de ir para produção.
     public function index()
     {
         return response()->json(Cadastro::all());
@@ -16,41 +20,60 @@ class CadastroController extends Controller
 
     public function store(Request $request)
     {
-        // 1. Validação (Removido o 'unique' para permitir re-inscrição de pendentes)
+        // 1. Validação (sem 'unique' para permitir re-inscrição de pendentes)
         $validado = $request->validate([
             'nome' => 'required|string|max:255',
-            'email' => 'required|email',
-            'cpf' => 'required|string|size:11', 
-            'telefone' => 'required|string|max:20',
-            'dataNascimento' => 'required|string|max:255',
-            'sexo' => 'required|string|max:1', // Ajustado para bater com o banco (M/F)
-            'percurso' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+            'cpf' => ['required', 'string', 'size:11'],
+            'telefone' => ['required', 'string', 'regex:/^\d{10,11}$/'],
+            'dataNascimento' => 'required|date_format:Y-m-d',
+            'sexo' => 'required|in:M,F',
+            'percurso' => 'required|in:Completo,Reduzido,Completo Misto,Reduzido Misto',
+            'modalidade' => 'nullable|string|max:60',
             'categoria' => 'required|string|max:255',
+            'kit' => 'required|in:com,sem',
+            'tamanho' => 'required_if:kit,com|nullable|in:P,M,G,GG',
+            'pagamento' => 'required|in:pix,cartao',
+            'aceite' => 'required|boolean',
+        ], [], [
+            'cpf' => 'CPF',
+            'telefone' => 'telefone',
+            'telefone.regex' => 'O telefone deve ter DDD + 8 ou 9 dígitos (10 ou 11 números).',
+            'dataNascimento' => 'data de nascimento',
+            'tamanho' => 'tamanho da camisa',
+            'aceite' => 'aceite dos termos',
         ]);
 
-        // 2. Lógica de Upsert (Evitar duplicidade e permitir nova tentativa de pagamento)
-        $cadastro = Cadastro::where('cpf', $validado['cpf'])->first();
+        $validado['cpf'] = preg_replace('/\D/', '', $validado['cpf']);
+        $validado['telefone'] = preg_replace('/\D/', '', $validado['telefone']);
+        $validado['tamanho'] = $validado['tamanho'] ?? null;
+        $validado['aceite'] = (bool) $validado['aceite'];
+
+        // 2. Lógica de Upsert (evita duplicidade e permite nova tentativa de pagamento)
+        $cadastro = Cadastro::where('cpf', $validado['cpf'])
+            ->orWhere('email', $validado['email'])
+            ->first();
 
         if ($cadastro) {
             if ($cadastro->status === 'pago') {
-                return response()->json(['error' => 'Este CPF já possui uma inscrição confirmada e paga.'], 422);
+                return response()->json([
+                    'error' => 'Já existe uma inscrição confirmada e paga para este CPF ou e-mail.',
+                ], 422);
             }
-            // Atualiza os dados se estiver pendente (caso queira mudar percurso/email antes de pagar)
+            // Atualiza os dados se estiver pendente (pode trocar percurso/categoria antes de pagar)
             $cadastro->update($validado);
         } else {
-            // Cria novo se não existir
             $validado['status'] = 'pendente';
             $cadastro = Cadastro::create($validado);
         }
 
-        $valorInscricao = 10000; // R$ 100,00 (PagBank usa centavos)
+        // 3. Valor: base + kit (PagBank usa centavos)
+        $valorInscricao = 10900 + ($validado['kit'] === 'com' ? 6000 : 0);
+        $referenceId = 'ID_' . $cadastro->id;
 
         try {
-            $telefoneLimpo = preg_replace('/\D/', '', $cadastro->telefone);
-            $cpfLimpo = preg_replace('/\D/', '', $cadastro->cpf);
-
-            $areaCode = substr($telefoneLimpo, 0, 2);
-            $number = substr($telefoneLimpo, 2);
+            $areaCode = substr($validado['telefone'], 0, 2);
+            $number = substr($validado['telefone'], 2);
 
             $baseUrl = env('PAGBANK_NOTIFICATION_URL', env('APP_URL'));
 
@@ -59,11 +82,11 @@ class CadastroController extends Controller
                 'Content-Type' => 'application/json',
                 'Accept' => 'application/json',
             ])->post(env('PAGBANK_URL') . '/checkouts', [
-                "reference_id" => "ID_" . $cadastro->id,
+                "reference_id" => $referenceId,
                 "customer" => [
                     "name" => $cadastro->nome,
                     "email" => $cadastro->email,
-                    "tax_id" => $cpfLimpo,
+                    "tax_id" => $cadastro->cpf,
                     "phones" => [
                         [
                             "country" => "55",
@@ -75,9 +98,10 @@ class CadastroController extends Controller
                 ],
                 "items" => [
                     [
-                        "name" => "Inscricao Corrida - " . strtoupper($cadastro->categoria),
+                        "name" => "Inscricao DPG - " . strtoupper($cadastro->categoria)
+                            . ($validado['kit'] === 'com' ? " (com kit {$validado['tamanho']})" : " (sem kit)"),
                         "quantity" => 1,
-                        "unit_amount" => $valorInscricao 
+                        "unit_amount" => $valorInscricao
                     ]
                 ],
                 "payment_methods" => [
@@ -88,7 +112,7 @@ class CadastroController extends Controller
                 "notification_urls" => [
                     $baseUrl . "/api/webhook/pagbank"
                 ],
-                "redirect_url" => $baseUrl . "/obrigado" 
+                "redirect_url" => $baseUrl . "/obrigado?ref=" . $referenceId
             ]);
 
             if (!$response->successful()) {
@@ -99,9 +123,17 @@ class CadastroController extends Controller
             $pagbankData = $response->json();
             $paymentUrl = collect($pagbankData['links'])->where('rel', 'PAY')->first()['href'];
 
+            // Uma única escrita com o valor, a referência e o código do checkout.
+            $cadastro->update([
+                'valor_inscricao' => $valorInscricao / 100,
+                'pagbank_reference' => $referenceId,
+                'pagbank_id' => $pagbankData['code'] ?? $pagbankData['id'] ?? null,
+            ]);
+
             return response()->json([
                 'message' => 'Inscrição processada com sucesso!',
-                'payment_url' => $paymentUrl
+                'payment_url' => $paymentUrl,
+                'reference' => $referenceId,
             ], 201);
 
         } catch (\Exception $e) {
@@ -113,49 +145,135 @@ class CadastroController extends Controller
     public function webhook(Request $request)
     {
         $dados = $request->all();
-        Log::info("--- NOVO WEBHOOK RECEBIDO ---");
+        $origem = $request->ip();
 
         $referenceId = $dados['reference_id'] ?? null;
         $statusPagamento = $dados['status'] ?? null;
-        
-        // Verifica status dentro do array de charges (comum no PagBank moderno)
-        if (!$statusPagamento && isset($dados['charges'][0]['status'])) {
-            $statusPagamento = $dados['charges'][0]['status'];
+        $charge = $dados['charges'][0] ?? null;
+
+        // No formato moderno o status real vem dentro de charges[0]
+        if (!$statusPagamento && isset($charge['status'])) {
+            $statusPagamento = $charge['status'];
         }
 
-        // Caso de notificação por XML/V3
-        if (isset($dados['notificationCode'])) {
-            $response = Http::get(env('PAGBANK_URL') . '/v3/transactions/notifications/' . $dados['notificationCode'], [
-                'email' => env('PAGBANK_EMAIL'),
-                'token' => env('PAGBANK_TOKEN'),
-            ]);
-            if ($response->successful()) {
-                $dadosXML = $response->xml(); 
-                $referenceId = $dadosXML['reference'] ?? null;
-                $statusPagamento = $this->converterStatus($dadosXML['status'] ?? null);
-            }
+        Log::info("--- WEBHOOK | ip: {$origem} | ref: " . ($referenceId ?? 'ausente')
+            . " | status: " . ($statusPagamento ?? 'ausente'));
+
+        $statusAprovados = ['PAID', 'COMPLETED', 'AUTHORIZED', 'AVAILABLE', '3', 3];
+        $statusCancelados = ['CANCELLED', 'EXPIRED', '4', 7];
+        $statusAguardando = ['IN_ANALYSIS', 'WAITING_FOR_PAYMENT', 'WAITING', '1', 2];
+
+        if (blank($referenceId)) {
+            Log::warning("Webhook sem reference_id. IP: {$origem}");
+            return response()->json(['status' => 'OK'], 200);
         }
 
-        Log::info("Processando Reference: $referenceId | Status: $statusPagamento");
+        // Remove SOMENTE o prefixo "ID_" (str_replace removia em qualquer posicao)
+        $idInscricao = preg_replace('/^ID_/', '', (string) $referenceId);
+        $atleta = is_numeric($idInscricao) ? Cadastro::find((int) $idInscricao) : null;
 
-        if ($referenceId) {
-            $idInscricao = str_replace('ID_', '', $referenceId);
-            $atleta = Cadastro::find($idInscricao);
+        if (!$atleta) {
+            Log::warning("Webhook sem inscricao correspondente. IP: {$origem} | Reference: {$referenceId}");
+            return response()->json(['status' => 'OK'], 200);
+        }
 
-            // Status que consideramos como "Pago"
-            $statusAprovados = ['PAID', 'COMPLETED', 'AUTHORIZED', '3', 3];
+        // O PagBank reenvia notificacoes e elas podem chegar fora de ordem. Um
+        // pagamento ja confirmado nunca pode ser rebaixado (nem por um WAITING
+        // atrasado), senao o horario real de pagamento se perde.
+        $jaConfirmado = $atleta->status === 'pago' && $atleta->pago_em !== null;
 
-            if ($atleta && in_array($statusPagamento, $statusAprovados)) {
-                $atleta->update(['status' => 'pago']);
-                Log::info("✅ SUCESSO: Atleta " . $atleta->nome . " atualizado para PAGO.");
+        if ($jaConfirmado) {
+            Log::info("Pagamento ja confirmado, notificacao ignorada | {$atleta->nome} | recebido: {$statusPagamento}");
+            return response()->json(['status' => 'OK'], 200);
+        }
+
+        $atualizacoes = [];
+
+if (in_array($statusPagamento, $statusAprovados, true)) {
+            $atualizacoes['status'] = 'pago';
+            $atualizacoes['pago_em'] = now();
+
+            // Valor realmente pago: PagBank envia em centavos
+            $centavos = $charge['paid_amount']
+                ?? $charge['amount']
+                ?? $dados['amount']
+                ?? null;
+
+            if ($centavos !== null) {
+                $valorPago = ((int) $centavos) / 100;
+                $atualizacoes['valor_pago'] = $valorPago;
+
+                $divergente = $atleta->valor_inscricao !== null
+                    && abs(((float) $atleta->valor_inscricao) - $valorPago) >= 0.01;
+
+                // No sandbox o PagBank sempre simula R$ 0,01, entao a divergencia
+                // e esperada e nao deve ser marcada como erro.
+                $isSandbox = str_contains((string) env('PAGBANK_URL'), 'sandbox');
+
+                if ($isSandbox && $divergente) {
+                    $divergente = false;
+                    Log::info(sprintf(
+                        'SANDBOX: %s | valor simulado R$ %.2f (cobrado R$ %.2f) - divergencia ignorada',
+                        $atleta->nome,
+                        $valorPago,
+                        $atleta->valor_inscricao
+                    ));
+                } elseif ($divergente) {
+                    Log::warning(sprintf(
+                        'DIVERGENCIA: %s | cobrado R$ %.2f | confirmado R$ %.2f | dif R$ %.2f',
+                        $atleta->nome,
+                        $atleta->valor_inscricao,
+                        $valorPago,
+                        $valorPago - $atleta->valor_inscricao
+                    ));
+                }
+
+                $atualizacoes['pagamento_divergente'] = $divergente;
             }
+
+            $pagbankId = $charge['id'] ?? $dados['id'] ?? null;
+            if ($pagbankId) {
+                $atualizacoes['pagbank_id'] = $pagbankId;
+            }
+
+            Log::info('SUCESSO: ' . $atleta->nome . ' -> PAGO (R$ ' . ($atualizacoes['valor_pago'] ?? '?') . ')');
+        } elseif (in_array($statusPagamento, $statusCancelados, true)) {
+            $atualizacoes['status'] = 'cancelado';
+            Log::info('CANCELADO: ' . $atleta->nome);
+        } elseif (in_array($statusPagamento, $statusAguardando, true)) {
+            $atualizacoes['status'] = 'aguardando';
+        }
+
+        if ($atualizacoes) {
+            $atleta->update($atualizacoes);
         }
 
         return response()->json(['status' => 'OK'], 200);
     }
 
-    private function converterStatus($status) {
-        $mapa = [1 => 'PENDING', 2 => 'IN_ANALYSIS', 3 => 'PAID', 4 => 'AVAILABLE', 7 => 'CANCELLED'];
-        return $mapa[$status] ?? $status;
+    /**
+     * Consulta publica do status de uma inscricao, usada pela pagina de confirmacao.
+     */
+    public function status(string $reference)
+    {
+        $idInscricao = preg_replace('/^ID_/', '', $reference);
+        $atleta = is_numeric($idInscricao) ? Cadastro::find((int) $idInscricao) : null;
+
+        if (!$atleta) {
+            return response()->json(['found' => false], 404);
+        }
+
+        return response()->json([
+            'found' => true,
+            'status' => $atleta->status,
+            'nome' => $atleta->nome,
+            'categoria' => $atleta->categoria,
+            'percurso' => $atleta->percurso,
+            'pagamento' => $atleta->pagamento,
+            'valor_inscricao' => $atleta->valor_inscricao === null ? null : (float) $atleta->valor_inscricao,
+            'valor_pago' => $atleta->valor_pago === null ? null : (float) $atleta->valor_pago,
+            'pagamento_divergente' => (bool) $atleta->pagamento_divergente,
+            'pago_em' => $atleta->pago_em ? $atleta->pago_em->format('d/m/Y H:i') : null,
+        ]);
     }
 }

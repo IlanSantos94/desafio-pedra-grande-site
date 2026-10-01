@@ -1,22 +1,20 @@
 <?php
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/health', function () {
     return response()->json(['status' => 'ok']);
 });
-Route::get('/obrigado', function () {
-    return "<h1>Obrigado! Pagamento realizado com sucesso.</h1>";
-});
 
-// Rotas existentes (Usando o caminho completo para evitar conflitos)
+// Cadastros
 Route::post('/cadastros', [\App\Http\Controllers\CadastroController::class, 'store']);
+// PENDENTE: proteger com middleware de admin antes de produção (exposição de PII).
 Route::get('/cadastros', [\App\Http\Controllers\CadastroController::class, 'index']);
 
-// Nova Rota para o Webhook do PagBank
-Route::post('/webhook/pagbank', [\App\Http\Controllers\CadastroController::class, 'webhook']);
+// Consulta de status (usada pela pagina de confirmacao, com auto-refresh)
+Route::get('/cadastros/{reference}/status', [\App\Http\Controllers\CadastroController::class, 'status'])
+    ->where('reference', 'ID_[0-9]+');
 
-// Rota de teste simples (sem controller)
-Route::get('/teste-rapido', function() {
-    return 'O arquivo de rotas está funcionando!';
-});
+// Webhook do PagBank
+Route::post('/webhook/pagbank', [\App\Http\Controllers\CadastroController::class, 'webhook']);

@@ -2,287 +2,918 @@
 <html lang="pt-BR">
 
 <head>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DESAFIO PEDRA GRANDE | Edição 2026</title>
+    <meta name="description"
+        content="Desafio Pedra Grande — Mountain Bike em Igarapé, MG. 50km e 30km de trilha, altimetria e natureza. Inscreva-se.">
+
+    <title>Desafio Pedra Grande — Mountain Bike</title>
+
+    <link rel="preconnect" href="https://fonts.bunny.net">
+    <link href="https://fonts.bunny.net/css?family=inter:400,500,600,700,800,inter-tight:600,700,800,900&display=swap"
+        rel="stylesheet">
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11" defer></script>
+
     @vite(['resources/css/formulario.css', 'resources/js/formulario.js'])
 </head>
 
 <body>
 
-    <header class="main-header">
-        <h1>Pedra Grande</h1>
-        <nav>
-            <ul>
-                <li><a href="#o-desafio">O Desafio</a></li>
-                <li><a href="#detalhes">Percurso</a></li>
-                <li><a href="#inscricoes">Inscrição</a></li>
-            </ul>
+    {{-- ================= HEADER ================= --}}
+    <header class="site-header">
+        <div class="site-header__inner">
+            <a href="#topo" class="site-logo" aria-label="Desafio Pedra Grande — início">
+                <img src="{{ asset('images/logo.png') }}" alt="Desafio Pedra Grande" width="800" height="800"
+                        loading="lazy" decoding="async">
+            </a>
+
+            <div class="site-search">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
+                    stroke-linecap="round" aria-hidden="true">
+                    <circle cx="11" cy="11" r="7" />
+                    <path d="M20 20l-3.5-3.5" />
+                </svg>
+                <input type="search" placeholder="Busque eventos, percursos ou conteúdos"
+                    aria-label="Buscar no site">
+            </div>
+
+            <nav class="site-nav" aria-label="Navegação principal">
+                <a href="#eventos">Eventos</a>
+                <a href="#inscricoes">Inscrições</a>
+                <a href="#galeria">Galeria</a>
+                <a href="#o-desafio">O Desafio</a>
+            </nav>
+
+            <button class="nav-toggle" type="button" aria-label="Abrir menu" aria-expanded="false"
+                data-nav-toggle>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" aria-hidden="true">
+                    <path d="M3 6h18M3 12h18M3 18h18" />
+                </svg>
+            </button>
+        </div>
+
+        <nav class="site-nav--mobile" id="menu-mobile" aria-label="Navegação mobile">
+            <a href="#eventos">Eventos</a>
+            <a href="#inscricoes">Inscrições</a>
+            <a href="#galeria">Galeria</a>
+            <a href="#o-desafio">O Desafio</a>
+            <a href="#patrocinadores">Patrocinadores</a>
         </nav>
     </header>
 
-    <section class="hero-section">
-        <div class="hero-content">
-            <div class="hero-badge">🏆 Edição 2026</div>
-            <h2>Conquiste a<br><span>Pedra Grande</span></h2>
-            <p>O maior desafio de mountain bike da região está de volta. 45km de pura superação entre trilhas, montanhas e natureza selvagem. Prepare-se para a aventura da sua vida.</p>
-            <a href="#inscricoes" class="cta-button">
-                Garanta Sua Vaga
-                <svg viewBox="0 0 24 24"><path d="M13.025 1l-2.847 2.828 6.176 6.176h-16.354v3.992h16.354l-6.176 6.176 2.847 2.828 10.975-11z"/></svg>
-            </a>
-        </div>
-        <a href="#o-desafio" class="hero-scroll">Role para conhecer</a>
-    </section>
+    <main id="topo">
 
-    <section id="o-desafio" class="section-padding">
-        <div class="container">
-            <h3>Nossa <span>História</span></h3>
-            <p class="section-intro">O Desafio Pedra Grande não é apenas uma corrida — é uma jornada de superação que celebra a beleza e a robustez do mountain bike.</p>
+{{-- ================= HERO ================= --}}
+        {{-- Base44: imagem contida (nao full-bleed), cantos inferiores
+             arredondados, overlay leve e texto fora da imagem no mobile. --}}
+        <section class="hero">
+            <div class="hero__container">
+                <div class="hero__frame">
+                    <div class="hero__media">
+                        <img src="{{ asset('images/hero-start.jpg') }}"
+                            alt="Largada do VIII Desafio Pedra Grande" width="2000" height="857"
+                            decoding="async" fetchpriority="high">
+                    </div>
+                    <div class="hero__overlay"></div>
 
-            <div class="feature-grid">
-                <div class="feature-item">
-                    <div class="feature-icon">⛰️</div>
-                    <h4>A Conquista da Pedra</h4>
-                    <p>Tudo começou em 2020, com um grupo de amigos buscando um percurso que realmente testasse seus limites. A Pedra Grande, com sua altitude e terreno desafiador, se tornou o palco perfeito.</p>
+                    <div class="hero__content">
+                        <div class="hero__content-inner">
+                            <span class="hero__badge">Evento oficial DPG</span>
+                            <h1 class="hero__title">Conquiste a Pedra Grande</h1>
+                            <p class="hero__text">Esporte, natureza e pessoas que fazem o Desafio Pedra Grande
+                                acontecer.</p>
+                            <a href="#inscricoes" class="btn btn--primary hero__cta">
+                                Inscrever-se
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                    <path d="M5 12h14M13 6l6 6-6 6" />
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
                 </div>
-                <div class="feature-item">
-                    <div class="feature-icon">🤝</div>
-                    <h4>Espírito Comunitário</h4>
-                    <p>Mais do que competição, valorizamos a camaradagem. O evento é feito por ciclistas para ciclistas, com pontos de hidratação e apoio estratégico para todos.</p>
-                </div>
-                <div class="feature-item">
-                    <div class="feature-icon">🌿</div>
-                    <h4>Sustentabilidade</h4>
-                    <p>Compromisso com a preservação ambiental. O percurso é planejado para mínimo impacto ecológico, e incentivamos a cultura de lixo zero entre todos os participantes.</p>
+
+                {{-- Mobile: conteudo abaixo da imagem, sem overlay --}}
+                <div class="hero__below">
+                    <span class="hero__badge hero__badge--soft">Evento oficial DPG</span>
+                    <h1 class="hero__title hero__title--ink">Conquiste a Pedra Grande</h1>
+                    <p class="hero__text hero__text--ink">Esporte, natureza e pessoas que fazem o Desafio Pedra Grande
+                        acontecer.</p>
+                    <a href="#inscricoes" class="btn btn--primary btn--block hero__cta--block">
+                        Inscrever-se
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M5 12h14M13 6l6 6-6 6" />
+                        </svg>
+                    </a>
                 </div>
             </div>
+        </section>
 
-            <a href="#inscricoes" class="cta-secondary">Garanta sua vaga →</a>
-        </div>
-    </section>
-
-    <section id="detalhes" class="section-padding section-dark">
-        <div class="container">
-            <h3>Detalhes <span>da Prova</span></h3>
-            <p class="section-intro">Prepare-se para o desafio! Aqui estão todas as informações que você precisa para encarar a Pedra Grande.</p>
-
-            <div class="info-grid">
-                <div class="info-block">
-                    <h4>🚴 O Percurso 2026</h4>
-                    <p>45km com altimetria acumulada de 1.800 metros. A rota da superação passa por:</p>
-                    <ul>
-                        <li><strong>Largada/Chegada:</strong> Praça Central de Igarapé</li>
-                        <li><strong>Ponto Mais Alto:</strong> 1450m (Acesso Norte da Pedra Grande)</li>
-                        <li><strong>Trechos Técnicos:</strong> 5km de single-track na Mata do Roncador</li>
-                        <li><strong>Pontos de Apoio:</strong> PA-1 (Km 15) e PA-2 (Km 30)</li>
-                    </ul>
-                    <div class="map-placeholder">[ Mapa interativo do percurso ]</div>
-                    <a href="#" class="btn-download">⬇️ Baixar GPX do Percurso</a>
+        {{-- ================= EVENTOS ================= --}}
+        <section class="section" id="eventos">
+            <div class="container">
+                <div class="head-row">
+                    <div class="section-head" style="margin-bottom:0">
+                        <h2 class="section-title">Eventos em destaque</h2>
+                        <p class="section-sub">O Desafio Pedra Grande e eventos parceiros</p>
+                    </div>
+                    <a href="#inscricoes" class="link-more">
+                        Ver todos
+                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M5 12h14M13 6l6 6-6 6" />
+                        </svg>
+                    </a>
                 </div>
 
-                <div class="info-block">
-                    <h4>📜 Regulamento</h4>
-                    <h5>Regras Principais</h5>
-                    <ol>
-                        <li>Uso obrigatório de capacete</li>
-                        <li>Proibido jogar lixo no percurso</li>
-                        <li>Idade mínima de 18 anos para a categoria Pro</li>
-                        <li>Respeito total à equipe de apoio</li>
-                    </ol>
-                    <a href="#" class="btn-download">📄 Regulamento Completo (PDF)</a>
-                </div>
+                <div class="event-grid">
 
-                <div class="info-block full">
-                    <h4>⏰ Cronograma</h4>
-                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:15px;">
+                    <article class="event-card">
+                        <div class="event-card__media">
+                            <img src="{{ asset('images/hero-start.jpg') }}" alt="Percurso do Desafio Pedra Grande"
+                                width="2000" height="857" loading="lazy" decoding="async">
+                            <span class="event-card__tag event-card__tag--official">Evento oficial DPG</span>
+                        </div>
+                        <div class="event-card__body">
+                            <h3 class="event-card__title">Desafio Pedra Grande</h3>
+                            <div class="event-card__meta">
+                                <span>
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" aria-hidden="true">
+                                        <rect x="3" y="5" width="18" height="16" rx="2" />
+                                        <path d="M8 3v4M16 3v4M3 11h18" />
+                                    </svg>
+                                    25/04/2027
+                                </span>
+                                <span>
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                        <path d="M12 21s-7-5.5-7-11a7 7 0 1114 0c0 5.5-7 11-7 11z" />
+                                        <circle cx="12" cy="10" r="2.5" />
+                                    </svg>
+                                    Igarapé — MG
+                                </span>
+                                <span>
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                        <path d="M3 17l6-9 4 5 3-4 5 8z" />
+                                    </svg>
+                                    30 km e 55 km
+                                </span>
+                            </div>
+                            <div class="event-card__foot">
+                                <a href="#inscricoes" class="btn btn--primary">Inscrever-se</a>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="event-card">
+                        <div class="event-card__media">
+                            <img src="{{ asset('images/action-trail.jpg') }}" alt="Trilha do Serra Mineira MTB Challenge"
+                                width="1600" height="1067" loading="lazy" decoding="async">
+                            <span class="event-card__tag">Evento parceiro</span>
+                        </div>
+                        <div class="event-card__body">
+                            <h3 class="event-card__title">Serra Mineira MTB Challenge</h3>
+                            <div class="event-card__meta">
+                                <span>
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" aria-hidden="true">
+                                        <rect x="3" y="5" width="18" height="16" rx="2" />
+                                        <path d="M8 3v4M16 3v4M3 11h18" />
+                                    </svg>
+                                    A definir
+                                </span>
+                                <span>
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                        <path d="M12 21s-7-5.5-7-11a7 7 0 1114 0c0 5.5-7 11-7 11z" />
+                                        <circle cx="12" cy="10" r="2.5" />
+                                    </svg>
+                                    Igarapé — MG
+                                </span>
+                                <span>
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                        <path d="M3 17l6-9 4 5 3-4 5 8z" />
+                                    </svg>
+                                    35 km e 60 km
+                                </span>
+                            </div>
+                            <div class="event-card__foot">
+                                <a href="#inscricoes" class="btn btn--ghost">Em breve</a>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="event-card">
+                        <div class="event-card__media">
+                            <img src="{{ asset('images/rider-smile.jpg') }}" alt="Ciclista do Trail Run Serra Verde"
+                                width="1600" height="2400" loading="lazy" decoding="async">
+                            <span class="event-card__tag">Evento parceiro</span>
+                        </div>
+                        <div class="event-card__body">
+                            <h3 class="event-card__title">Trail Run Serra Verde</h3>
+                            <div class="event-card__meta">
+                                <span>
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" aria-hidden="true">
+                                        <rect x="3" y="5" width="18" height="16" rx="2" />
+                                        <path d="M8 3v4M16 3v4M3 11h18" />
+                                    </svg>
+                                    A definir
+                                </span>
+                                <span>
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                        <path d="M12 21s-7-5.5-7-11a7 7 0 1114 0c0 5.5-7 11-7 11z" />
+                                        <circle cx="12" cy="10" r="2.5" />
+                                    </svg>
+                                    Nova Lima — MG
+                                </span>
+                                <span>
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                        <path d="M3 17l6-9 4 5 3-4 5 8z" />
+                                    </svg>
+                                    5 km, 10 km e 21 km
+                                </span>
+                            </div>
+                            <div class="event-card__foot">
+                                <a href="#inscricoes" class="btn btn--ghost">Em breve</a>
+                            </div>
+                        </div>
+                    </article>
+
+                </div>
+            </div>
+        </section>
+
+        {{-- ================= SOBRE / O DESAFIO ================= --}}
+        <section class="section topo" id="o-desafio">
+            <div class="container about">
+                <div>
+                    <span class="eyebrow">Sobre o Desafio</span>
+                    <h2 class="section-title about__title">Três décadas sobre duas rodas</h2>
+                    <p class="about__text">O Desafio Pedra Grande nasceu em Igarapé, Minas Gerais, e desde 2017 reúne
+                        atletas, famílias e apaixonados pelo ciclismo em uma experiência marcada por esporte, natureza e
+                        superação.</p>
+                    <p class="about__text">Mais do que competição, o evento é feito por ciclistas para ciclistas. Cada
+                        edição passa mais longe, mais alto e mais difícil — mas o bater do coração de sempre
+                        permanece o mesmo: chegar junto.</p>
+
+                    <dl class="about__stats">
                         <div>
-                            <h5>Sábado, 15/05/2026</h5>
-                            <ul>
-                                <li><strong>06:00</strong> — Retirada de Kits (Praça Central)</li>
-                                <li><strong>07:30</strong> — Fechamento do Grid</li>
-                                <li><strong>08:00</strong> — Largada Principal</li>
-                                <li><strong>12:00</strong> — Início da Premiação</li>
-                                <li><strong>14:00</strong> — Encerramento</li>
+                            <dt>50 km</dt>
+                            <dd>Percurso completo</dd>
+                        </div>
+                        <div>
+                            <dt>30 km</dt>
+                            <dd>Percurso reduzido</dd>
+                        </div>
+                        <div>
+                            <dt>2017</dt>
+                            <dd>Primeira edição</dd>
+                        </div>
+                    </dl>
+                </div>
+
+                <div class="about__media">
+                    <img src="{{ asset('images/team-group.jpg') }}" alt="Equipe do Desafio Pedra Grande"
+                        width="1600" height="1067" loading="lazy" decoding="async">
+                </div>
+            </div>
+        </section>
+
+        {{-- ================= GALERIA ================= --}}
+        <section class="section" id="galeria">
+            <div class="container">
+                <div class="head-row">
+                    <div class="section-head" style="margin-bottom:0">
+                        <span class="eyebrow">Viva o Desafio</span>
+                        <h2 class="section-title">Histórias que ficam</h2>
+                        <p class="section-sub">Registros de quem encarou a montanha</p>
+                    </div>
+                </div>
+
+                <div class="gallery">
+                    <div class="gallery__item gallery__item--wide">
+                        <img src="{{ asset('images/trophies.jpg') }}" alt="Troféus do Desafio Pedra Grande"
+                            width="1600" height="1067" loading="lazy" decoding="async">
+                    </div>
+                    <div class="gallery__item gallery__item--tall">
+                        <img src="{{ asset('images/podium-duo.jpg') }}" alt="Dupla no pódio"
+                            width="1600" height="2400" loading="lazy" decoding="async">
+                    </div>
+                    <div class="gallery__item gallery__item--square">
+                        <img src="{{ asset('images/podium-women.jpg') }}" alt="Ciclistas no pódio"
+                            width="1600" height="1067" loading="lazy" decoding="async">
+                    </div>
+                    <div class="gallery__item gallery__item--square">
+                        <img src="{{ asset('images/podium-men.jpg') }}" alt="Ciclistas no pódio"
+                            width="1600" height="1067" loading="lazy" decoding="async">
+                    </div>
+                    <div class="gallery__item gallery__item--square">
+                        <img src="{{ asset('images/rider-smile.jpg') }}" alt="Ciclista sorrindo"
+                            width="1600" height="2400" loading="lazy" decoding="async">
+                    </div>
+                    <div class="gallery__item gallery__item--wide">
+                        <img src="{{ asset('images/action-trail.jpg') }}" alt="Ação na trilha"
+                            width="1600" height="1067" loading="lazy" decoding="async">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        {{-- ================= PATROCINADORES ================= --}}
+        <section class="section section--alloy" id="patrocinadores">
+            <div class="container">
+                <div class="section-head section-head--center">
+                    <h2 class="section-title">Patrocinadores</h2>
+                    <p class="section-sub">Quem faz o Desafio Pedra Grande acontecer</p>
+                </div>
+
+                <div class="sponsors">
+                    <div class="sponsor">Apoiador</div>
+                    <div class="sponsor">Apoiador</div>
+                    <div class="sponsor">Apoiador</div>
+                    <div class="sponsor">Apoiador</div>
+                    <div class="sponsor">Apoiador</div>
+                    <div class="sponsor">Apoiador</div>
+                </div>
+            </div>
+        </section>
+
+        {{-- ================= INSCRIÇÃO ================= --}}
+        <section class="section reg" id="inscricoes">
+            <div class="container">
+                <div class="section-head section-head--center">
+                    <span class="eyebrow">Inscrições 2027</span>
+                    <h2 class="section-title">Garanta sua vaga</h2>
+                    <p class="section-sub">Faça sua inscrição para o Desafio Pedra Grande de forma rápida e segura.
+                        São seis etapas rápidas.</p>
+                </div>
+
+                <div class="reg-layout">
+                    <div class="reg-card">
+
+                        <form id="registration-form" novalidate>
+
+                        {{-- STEP INDICATOR --}}
+                        <div class="stepper">
+                            <div class="stepper__head">
+                                <div class="stepper__count">
+                                    <span class="stepper__count-label">Etapa <b data-step-current>1</b> de 6</span>
+                                    <span class="stepper__count-name" data-step-name>Percurso</span>
+                                </div>
+                            </div>
+
+                            <ol class="stepper__track">
+                                <li class="stepper__item is-current" data-stepper="1">
+                                    <span class="stepper__dot">1</span>
+                                    <span class="stepper__label">Percurso</span>
+                                </li>
+                                <span class="stepper__bar"></span>
+                                <li class="stepper__item" data-stepper="2">
+                                    <span class="stepper__dot">2</span>
+                                    <span class="stepper__label">Atleta</span>
+                                </li>
+                                <span class="stepper__bar"></span>
+                                <li class="stepper__item" data-stepper="3">
+                                    <span class="stepper__dot">3</span>
+                                    <span class="stepper__label">Categoria</span>
+                                </li>
+                                <span class="stepper__bar"></span>
+                                <li class="stepper__item" data-stepper="4">
+                                    <span class="stepper__dot">4</span>
+                                    <span class="stepper__label">Kit</span>
+                                </li>
+                                <span class="stepper__bar"></span>
+                                <li class="stepper__item" data-stepper="5">
+                                    <span class="stepper__dot">5</span>
+                                    <span class="stepper__label">Revisão</span>
+                                </li>
+                                <span class="stepper__bar"></span>
+                                <li class="stepper__item" data-stepper="6">
+                                    <span class="stepper__dot">6</span>
+                                    <span class="stepper__label">Pagamento</span>
+                                </li>
+                            </ol>
+
+                            <div class="stepper__mobile">
+                                <div class="stepper__mobile-fill" data-step-fill></div>
+                            </div>
+                        </div>
+
+                            {{-- ===== ETAPA 1: PERCURSO ===== --}}
+                            <div class="step is-active" data-step="1">
+                                <h3 class="step__title">Qual desafio você vai encarar?</h3>
+                                <p class="step__desc">Escolha o percurso da sua inscrição.</p>
+
+                                <div class="option-grid option-grid--3">
+                                    <label class="option">
+                                        <input type="radio" name="percurso" value="Completo" required>
+                                        <span class="option__check">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
+                                                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                                <path d="M5 13l4 4L19 7" />
+                                            </svg>
+                                        </span>
+                                        <span class="option__title">Percurso Completo</span>
+                                        <span class="option__tag">Mountain Bike</span>
+                                        <span class="option__desc">O desafio completo para quem quer enfrentar toda a
+                                            intensidade do Pedra Grande.</span>
+                                        <span class="option__foot">
+                                            <span class="option__dist">50 km</span>
+                                            <span class="option__level">Avançado</span>
+                                        </span>
+                                    </label>
+
+                                    <label class="option">
+                                        <input type="radio" name="percurso" value="Reduzido" required>
+                                        <span class="option__check">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
+                                                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                                <path d="M5 13l4 4L19 7" />
+                                            </svg>
+                                        </span>
+                                        <span class="option__title">Percurso Reduzido</span>
+                                        <span class="option__tag">Mountain Bike</span>
+                                        <span class="option__desc">Uma experiência desafiadora para quem quer viver o DPG
+                                            em um percurso mais acessível.</span>
+                                        <span class="option__foot">
+                                            <span class="option__dist">30 km</span>
+                                            <span class="option__level">Intermediário</span>
+                                        </span>
+                                    </label>
+
+                                    <label class="option">
+                                        <input type="radio" name="percurso" value="Completo Misto" required>
+                                        <span class="option__check">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
+                                                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                                <path d="M5 13l4 4L19 7" />
+                                            </svg>
+                                        </span>
+                                        <span class="option__title">Completo Misto</span>
+                                        <span class="option__tag">E-Bike</span>
+                                        <span class="option__desc">Toda a extensão do percurso completo, na modalidade
+                                            elétrica.</span>
+                                        <span class="option__foot">
+                                            <span class="option__dist">50 km</span>
+                                            <span class="option__level">Misto</span>
+                                        </span>
+                                    </label>
+
+                                    <label class="option">
+                                        <input type="radio" name="percurso" value="Reduzido Misto" required>
+                                        <span class="option__check">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
+                                                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                                <path d="M5 13l4 4L19 7" />
+                                            </svg>
+                                        </span>
+                                        <span class="option__title">Reduzido Misto</span>
+                                        <span class="option__tag">PCD / Dupla</span>
+                                        <span class="option__desc">Percurso reduzido nas modalidades PCD e dupla
+                                            mista.</span>
+                                        <span class="option__foot">
+                                            <span class="option__dist">30 km</span>
+                                            <span class="option__level">Misto</span>
+                                        </span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            {{-- ===== ETAPA 2: ATLETA ===== --}}
+                            <div class="step" data-step="2">
+                                <h3 class="step__title">Seus dados</h3>
+                                <p class="step__desc">Precisamos destes dados para emitir sua inscrição.</p>
+
+                                <div class="field-grid">
+                                    <div class="field">
+                                        <label class="field-label" for="nome">Nome completo <span class="req">*</span></label>
+                                        <input type="text" id="nome" name="nome" placeholder="Seu nome completo"
+                                            autocomplete="name" required>
+                                        <p class="field__error hide" data-error="nome"></p>
+                                    </div>
+
+                                    <div class="field-grid field-grid--2" style="margin-top:0">
+                                        <div class="field">
+                                            <label class="field-label" for="email">E-mail <span class="req">*</span></label>
+                                            <input type="email" id="email" name="email" placeholder="seu@email.com"
+                                                autocomplete="email" required>
+                                            <p class="field__error hide" data-error="email"></p>
+                                        </div>
+
+                                        <div class="field">
+                                            <label class="field-label" for="telefone">Telefone <span class="req">*</span></label>
+                                            <input type="tel" id="telefone" name="telefone" placeholder="(31) 99999-0000"
+                                                autocomplete="tel" required>
+                                            <p class="field__error hide" data-error="telefone"></p>
+                                        </div>
+                                    </div>
+
+                                    <div class="field-grid field-grid--2" style="margin-top:0">
+                                        <div class="field">
+                                            <label class="field-label" for="cpf">CPF <span class="req">*</span></label>
+                                            <input type="text" id="cpf" name="cpf" placeholder="000.000.000-00"
+                                                inputmode="numeric" maxlength="14" required>
+                                            <p class="field__error hide" data-error="cpf"></p>
+                                        </div>
+
+                                        <div class="field">
+                                            <label class="field-label" for="dataNascimento">Data de nascimento
+                                                <span class="req">*</span></label>
+                                            <input type="date" id="dataNascimento" name="dataNascimento" required>
+                                            <p class="field__error hide" data-error="dataNascimento"></p>
+                                        </div>
+                                    </div>
+
+                                    <div class="field field--select" style="max-width:220px">
+                                        <label class="field-label" for="sexo">Sexo <span class="req">*</span></label>
+                                        <select id="sexo" name="sexo" required>
+                                            <option value="">Selecione</option>
+                                            <option value="M">Masculino</option>
+                                            <option value="F">Feminino</option>
+                                        </select>
+                                        <p class="field__error hide" data-error="sexo"></p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {{-- ===== ETAPA 3: MODALIDADE E CATEGORIA ===== --}}
+                            <div class="step" data-step="3">
+                                <h3 class="step__title">Modalidade e categoria</h3>
+                                <p class="step__desc">Definimos a categoria com base no seu percurso, idade e sexo.</p>
+
+                                <div class="option-grid option-grid--3col">
+                                    <div class="option" style="cursor:default">
+                                        <span class="option__title" data-modalidade>—</span>
+                                        <span class="option__tag" data-modalidade-tag>Modalidade</span>
+                                        <span class="option__desc" data-percurso-resumo>Selecione o percurso na etapa
+                                            anterior.</span>
+                                    </div>
+                                </div>
+
+                                <div class="field field--select field--mt">
+                                    <label class="field-label" for="categoria">Categoria <span class="req">*</span></label>
+                                    <select id="categoria" name="categoria" required disabled>
+                                        <option value="">Informe seus dados primeiro</option>
+                                    </select>
+                                    <p class="field__hint" data-categoria-hint></p>
+                                    <p class="field__error hide" data-error="categoria"></p>
+                                </div>
+                            </div>
+
+                            {{-- ===== ETAPA 4: KIT ===== --}}
+                            <div class="step" data-step="4">
+                                <h3 class="step__title">Kit do atleta</h3>
+                                <p class="step__desc">Escolha se deseja contratar o kit oficial do desafio.</p>
+
+                                <div class="option-grid option-grid--2">
+                                    <label class="option">
+                                        <input type="radio" name="kit" value="com" required>
+                                        <span class="option__check">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
+                                                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                                <path d="M5 13l4 4L19 7" />
+                                            </svg>
+                                        </span>
+                                        <span class="option__title">Com kit</span>
+                                        <span class="option__desc">Camisa de ciclismo, placa de bike, chip de
+                                            cronometragem e medalha.</span>
+                                        <span class="option__foot">
+                                            <span class="option__price">+ R$ 60,00</span>
+                                        </span>
+                                    </label>
+
+                                    <label class="option">
+                                        <input type="radio" name="kit" value="sem" required>
+                                        <span class="option__check">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
+                                                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                                <path d="M5 13l4 4L19 7" />
+                                            </svg>
+                                        </span>
+                                        <span class="option__title">Sem kit</span>
+                                        <span class="option__desc">Apenas a inscrição, com chip de cronometragem e
+                                            medalha de participação.</span>
+                                        <span class="option__foot">
+                                            <span class="option__price">Incluso</span>
+                                        </span>
+                                    </label>
+                                </div>
+
+                                <div class="field field--select field--mt hide" data-tamanho-wrap>
+                                    <label class="field-label" for="tamanho">Tamanho da camisa <span class="req">*</span>
+                                    </label>
+                                    <select id="tamanho" name="tamanho">
+                                        <option value="">Selecione</option>
+                                        <option value="P">P</option>
+                                        <option value="M">M</option>
+                                        <option value="G">G</option>
+                                        <option value="GG">GG</option>
+                                    </select>
+                                    <p class="field__error hide" data-error="tamanho"></p>
+                                </div>
+                            </div>
+
+                            {{-- ===== ETAPA 5: REVISÃO ===== --}}
+                            <div class="step" data-step="5">
+                                <h3 class="step__title">Revise sua inscrição</h3>
+                                <p class="step__desc">Confira os dados antes de finalizar.</p>
+
+                                <div class="field-grid" style="margin-top:1.5rem">
+                                    <div class="review-group">
+                                        <div class="review-group__head">
+                                            <span class="review-group__title">Percurso</span>
+                                            <button type="button" class="review-group__edit" data-goto="1">
+                                                Editar
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                    aria-hidden="true">
+                                                    <path d="M4 20h4L19 9a2.8 2.8 0 10-4-4L4 16v4z" />
+                                                </svg>
+                                            </button>
+                                        </div>
+                                        <dl class="review-list" data-review="percurso"></dl>
+                                    </div>
+
+                                    <div class="review-group">
+                                        <div class="review-group__head">
+                                            <span class="review-group__title">Atleta</span>
+                                            <button type="button" class="review-group__edit" data-goto="2">
+                                                Editar
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                    aria-hidden="true">
+                                                    <path d="M4 20h4L19 9a2.8 2.8 0 10-4-4L4 16v4z" />
+                                                </svg>
+                                            </button>
+                                        </div>
+                                        <dl class="review-list" data-review="atleta"></dl>
+                                    </div>
+
+                                    <div class="review-group">
+                                        <div class="review-group__head">
+                                            <span class="review-group__title">Categoria e kit</span>
+                                            <button type="button" class="review-group__edit" data-goto="3">
+                                                Editar
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                    aria-hidden="true">
+                                                    <path d="M4 20h4L19 9a2.8 2.8 0 10-4-4L4 16v4z" />
+                                                </svg>
+                                            </button>
+                                        </div>
+                                        <dl class="review-list" data-review="kit"></dl>
+                                    </div>
+
+                                    <dl class="review-total">
+                                        <dt>Total da inscrição</dt>
+                                        <dd data-total>R$ 109,00</dd>
+                                    </dl>
+                                </div>
+                            </div>
+
+                            {{-- ===== ETAPA 6: PAGAMENTO ===== --}}
+                            <div class="step" data-step="6">
+                                <h3 class="step__title">Finalizar inscrição</h3>
+                                <p class="step__desc">Escolha como deseja pagar e aceite os termos.</p>
+
+                                <div class="option-grid option-grid--2">
+                                    <label class="option">
+                                        <input type="radio" name="pagamento" value="pix" required>
+                                        <span class="option__check">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
+                                                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                                <path d="M5 13l4 4L19 7" />
+                                            </svg>
+                                        </span>
+                                        <span class="option__title">Pix</span>
+                                        <span class="option__desc">Aprovação em poucos minutos, 24 horas por dia.</span>
+                                    </label>
+
+                                    <label class="option">
+                                        <input type="radio" name="pagamento" value="cartao">
+                                        <span class="option__check">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
+                                                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                                <path d="M5 13l4 4L19 7" />
+                                            </svg>
+                                        </span>
+                                        <span class="option__title">Cartão de crédito</span>
+                                        <span class="option__desc">Parcele em até 3x sem juros no checkout.</span>
+                                    </label>
+                                </div>
+
+                                <div class="check-group">
+                                    <label class="check">
+                                        <input type="checkbox" name="termoRegulamento" required>
+                                        <span class="check__text">Li e aceito o <a href="#o-desafio">Regulamento
+                                                Oficial</a> do evento.</span>
+                                    </label>
+                                    <label class="check">
+                                        <input type="checkbox" name="termoResponsabilidade" required>
+                                        <span class="check__text">Declaro estar ciente dos riscos da prova e libero a
+                                            organização de qualquer responsabilidade.</span>
+                                    </label>
+                                    <label class="check">
+                                        <input type="checkbox" name="termoImagem" required>
+                                        <span class="check__text">Autorizo o uso de imagens e vídeos nos quais eu
+                                            apareça para divulgação do evento.</span>
+                                    </label>
+                                </div>
+
+                                <p class="field__error hide" data-error="termos"></p>
+
+                                <p class="field__hint" style="margin-top:1.5rem">
+                                    Você será redirecionado para o ambiente seguro do PagBank para concluir o pagamento.
+                                </p>
+                            </div>
+
+                            {{-- ===== NAVEGAÇÃO ===== --}}
+                            <div class="step-nav">
+                                <button type="button" class="step-nav__back" data-prev hidden>
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                        <path d="M19 12H5M11 18l-6-6 6-6" />
+                                    </svg>
+                                    Voltar
+                                </button>
+                                <button type="button" class="btn btn--primary" data-next>
+                                    Continuar
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                        <path d="M5 12h14M13 6l6 6-6 6" />
+                                    </svg>
+                                </button>
+                            </div>
+
+                            <div class="confirm hide" data-confirm>
+                                <span class="confirm__icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                                        stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                        <path d="M5 13l4 4L19 7" />
+                                    </svg>
+                                </span>
+                                <h3 class="confirm__title">Agora é oficial</h3>
+                                <p class="confirm__text">Nos vemos no Desafio Pedra Grande.</p>
+                                <div class="confirm__box">
+                                    <p style="font-size:.75rem;letter-spacing:.14em;text-transform:uppercase;color:var(--dpg-ink-45)">
+                                        Número da inscrição
+                                    </p>
+                                    <p class="confirm__num" data-numero>—</p>
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+
+                    {{-- ===== SIDEBAR ===== --}}
+                    <aside class="side">
+                        <div class="side-card side-card--topo">
+                            <span class="side-card__title">1º Lote promocional</span>
+                            <div class="side-price">
+                                <span class="side-price__value">R$ 109</span>
+                                <span class="side-price__old">R$ 180</span>
+                            </div>
+                            <p class="side-note">Vagas limitadas. Garanta a sua agora.</p>
+                        </div>
+
+                        <div class="side-card">
+                            <span class="side-card__title">Lotes e valores</span>
+                            <div style="margin-top:.75rem">
+                                <div class="side-lote is-current">
+                                    <span>1º Lote (promocional)</span><b>R$ 109</b>
+                                </div>
+                                <div class="side-lote">
+                                    <span>2º Lote</span><b>R$ 150</b>
+                                </div>
+                                <div class="side-lote">
+                                    <span>3º Lote</span><b>R$ 180</b>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="side-card">
+                            <span class="side-card__title">Incluso na inscrição</span>
+                            <ul class="side-list">
+                                <li>
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
+                                        stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                        <path d="M5 13l4 4L19 7" />
+                                    </svg>
+                                    Estrutura completa do evento
+                                </li>
+                                <li>
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
+                                        stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                        <path d="M5 13l4 4L19 7" />
+                                    </svg>
+                                    Pontos de hidratação no percurso
+                                </li>
+                                <li>
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
+                                        stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                        <path d="M5 13l4 4L19 7" />
+                                    </svg>
+                                    Café da manhã
+                                </li>
+                                <li>
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
+                                        stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                        <path d="M5 13l4 4L19 7" />
+                                    </svg>
+                                    Suporte mecânico e de pista
+                                </li>
+                                <li>
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
+                                        stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                        <path d="M5 13l4 4L19 7" />
+                                    </svg>
+                                    Número de atleta
+                                </li>
+                                <li>
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
+                                        stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                        <path d="M5 13l4 4L19 7" />
+                                    </svg>
+                                    Premiação por categoria
+                                </li>
                             </ul>
                         </div>
-                        <div>
-                            <h5>Categorias</h5>
-                            <ul>
-                                <li><strong>Completo (50km):</strong> Elite, Expert, Sub-30, Master A1/A2/B1/B2/C, Dupla Pro</li>
-                                <li><strong>Reduzido (30km):</strong> Juvenil, Cadete, Sênior, Veterano, Master D</li>
-                                <li><strong>Completo Misto:</strong> E-BIKE</li>
-                                <li><strong>Reduzido Misto:</strong> PCD, Dupla Mista</li>
-                            </ul>
+                    </aside>
+                </div>
+            </div>
+        </section>
+
+        {{-- ================= CTA FINAL ================= --}}
+        <section class="section">
+            <div class="container">
+                <div class="cta-panel">
+                    <div class="cta-panel__media">
+                        <img src="{{ asset('images/team-wide.jpg') }}" alt="Equipe do Desafio Pedra Grande"
+                            width="1600" height="1067" loading="lazy" decoding="async">
+                    </div>
+                    <div class="cta-panel__body">
+                        <span class="eyebrow">Pronto para o desafio?</span>
+                        <h2 class="cta-panel__title">As vagas do 1º lote estão abertas</h2>
+                        <p class="cta-panel__text">Inscrição rápida, pagamento seguro via Pix ou cartão e número de
+                            atleta liberado na hora. Toda a estrutura do evento inclusa.</p>
+                        <div class="cta-panel__actions">
+                            <a href="#inscricoes" class="btn btn--primary">Garantir minha vaga</a>
+                            <a href="#o-desafio" class="btn btn--ghost">Conhecer o percurso</a>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <section id="inscricoes" class="section-padding">
+    </main>
+
+    {{-- ================= FOOTER ================= --}}
+    <footer class="site-footer">
         <div class="container">
-            <h3>Preparado para o <span>Desafio</span>?</h3>
-            <p class="section-intro">Garanta sua vaga no lote promocional! Preencha seus dados em poucas etapas.</p>
+            <div class="site-footer__top">
+                <div class="site-footer__brand">
+<img src="{{ asset('images/logo.png') }}" alt="Desafio Pedra Grande" width="800" height="800"
+                    decoding="async" fetchpriority="high">
+                    <p>Esporte, natureza e pessoas que fazem o Desafio Pedra Grande acontecer. Igarapé — Minas Gerais,
+                        desde 2017.</p>
+                </div>
 
-            <div class="registration-layout">
-                <form id="registration-form" class="registration-form">
-
-                    <div class="step-indicator">
-                        <div class="step-progress" style="width: 0%;"></div>
-                        <div class="step-item active" data-step="1">
-                            <div class="step-circle">1</div>
-                            <span class="step-label">Dados</span>
-                        </div>
-                        <div class="step-item" data-step="2">
-                            <div class="step-circle">2</div>
-                            <span class="step-label">Corrida</span>
-                        </div>
-                        <div class="step-item" data-step="3">
-                            <div class="step-circle">3</div>
-                            <span class="step-label">Confirmação</span>
-                        </div>
-                    </div>
-
-                    <div class="form-step active" data-step="1">
-                        <h4>📋 Dados Pessoais</h4>
-                        <p class="form-step-desc">Conte-nos sobre você para começarmos a aventura.</p>
-
-                        <div class="form-group">
-                            <label for="nome">Nome Completo <span class="required">*</span></label>
-                            <input type="text" id="nome" name="nome" placeholder="Seu nome completo" required>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="email">E-mail <span class="required">*</span></label>
-                                <input type="email" id="email" name="email" placeholder="seu@email.com" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="telefone">Telefone <span class="required">*</span></label>
-                                <input type="tel" id="telefone" name="telefone" placeholder="(31) 99999-0000" required>
-                            </div>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="cpf">CPF <span class="required">*</span></label>
-                                <input type="text" id="cpf" name="cpf" placeholder="000.000.000-00" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="dataNascimento">Data de Nascimento <span class="required">*</span></label>
-                                <input type="date" id="dataNascimento" name="dataNascimento" required>
-                            </div>
-                        </div>
-
-                        <div class="form-buttons">
-                            <button type="button" class="btn-next" onclick="nextStep()">Próxima Etapa →</button>
-                        </div>
-                    </div>
-
-                    <div class="form-step" data-step="2">
-                        <h4>🚴 Dados da Corrida</h4>
-                        <p class="form-step-desc">Escolha o percurso ideal para o seu estilo.</p>
-
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="sexo">Sexo <span class="required">*</span></label>
-                                <select id="sexo" name="sexo" required>
-                                    <option value="">Selecione...</option>
-                                    <option value="M">Masculino</option>
-                                    <option value="F">Feminino</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="percurso">Percurso <span class="required">*</span></label>
-                                <select id="percurso" name="percurso" required disabled>
-                                    <option value="">Informe data e sexo primeiro...</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="categoria">Categoria <span class="required">*</span></label>
-                            <select id="categoria" name="categoria" required disabled>
-                                <option value="">Selecione o percurso primeiro...</option>
-                            </select>
-                        </div>
-
-                        <div class="form-buttons">
-                            <button type="button" class="btn-prev" onclick="prevStep()">← Voltar</button>
-                            <button type="button" class="btn-next" onclick="nextStep()">Revisar Inscrição →</button>
-                        </div>
-                    </div>
-
-                    <div class="form-step" data-step="3">
-                        <h4>✅ Revisar e Confirmar</h4>
-                        <p class="form-step-desc">Confira seus dados antes de finalizar.</p>
-
-                        <div id="review-data" style="background:var(--bg);padding:20px;border-radius:10px;margin-bottom:20px;">
-                            <p style="color:var(--text-light);font-size:.85em;">Carregando dados...</p>
-                        </div>
-
-                        <div class="checkbox-group">
-                            <input type="checkbox" id="aceite" name="aceite" required>
-                            <label for="aceite">Li e aceito o <a href="#regulamento" target="_blank">Regulamento Oficial</a> do evento.</label>
-                        </div>
-
-                        <div class="form-buttons" style="flex-direction:column;">
-                            <button type="button" class="btn-prev" onclick="prevStep()" style="width:100%;justify-content:center;">← Voltar e Editar</button>
-                            <button type="submit" class="btn-submit">💳 Confirmar Inscrição e Pagar</button>
-                            <p class="form-note">Você será redirecionado para a página de pagamento após a confirmação.</p>
-                        </div>
-                    </div>
-
-                </form>
-
-                <div class="reg-info-sidebar">
-                    <div class="sidebar-header">
-                        <h4>Lotes e Valores</h4>
-                        <div class="price-highlight">
-                            R$ 109 <small>1º Lote Promocional</small>
-                        </div>
-                    </div>
-                    <ul class="price-list">
-                        <li>
-                            <span class="lote-name">1º Lote (Promocional)</span>
-                            <span class="lote-value">R$ 109</span>
-                        </li>
-                        <li>
-                            <span class="lote-name">2º Lote</span>
-                            <span class="lote-value">R$ 150</span>
-                        </li>
-                        <li>
-                            <span class="lote-name">3º Lote</span>
-                            <span class="lote-value">R$ 180</span>
-                        </li>
+                <div>
+                    <h3 class="site-footer__title">Evento</h3>
+                    <ul class="site-footer__list">
+                        <li><a href="#o-desafio">O Desafio</a></li>
+                        <li><a href="#eventos">Eventos</a></li>
+                        <li><a href="#galeria">Galeria</a></li>
+                        <li><a href="#inscricoes">Inscrições</a></li>
                     </ul>
+                </div>
 
-                    <h4 style="font-family:'Oswald',sans-serif;color:var(--secondary);font-size:1.1em;margin-bottom:15px;text-transform:uppercase;">Kit do Atleta</h4>
-                    <ul class="kit-list">
-                        <li>Camisa de Ciclismo Personalizada</li>
-                        <li>Placa de Identificação da Bike</li>
-                        <li>Chip de Cronometragem</li>
-                        <li>Medalha de Participação</li>
-                        <li>Seguro Atleta</li>
+                <div>
+                    <h3 class="site-footer__title">Contato</h3>
+                    <ul class="site-footer__list">
+                        <li><a href="mailto:contato@desafiopedragrande.com.br">contato@desafiopedragrande.com.br</a></li>
+                        <li><a href="https://instagram.com" target="_blank" rel="noopener">Instagram</a></li>
+                        <li><a href="https://facebook.com" target="_blank" rel="noopener">Facebook</a></li>
                     </ul>
-
-                    <div class="sidebar-cta">
-                        <small>✋ Vagas limitadas! Garanta a sua agora.</small>
-                    </div>
                 </div>
             </div>
-        </div>
-    </section>
 
-    <footer class="main-footer">
-        <p>&copy; 2026 DESAFIO PEDRA GRANDE. Todos os direitos reservados.</p>
-        <div class="social-links">
-            <a href="#" target="_blank">Instagram</a>
-            <a href="#" target="_blank">Facebook</a>
+            <div class="site-footer__bottom">
+                <p>&copy; {{ date('Y') }} Desafio Pedra Grande. Todos os direitos reservados.</p>
+                <p>Regulamento · Privacidade</p>
+            </div>
         </div>
     </footer>
 
 </body>
+
 </html>

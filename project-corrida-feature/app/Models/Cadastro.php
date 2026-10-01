@@ -15,6 +15,25 @@ class Cadastro extends Model
         'categoria',
         'percurso',
         'sexo',
-        'status'
+        'modalidade',
+        'kit',
+        'tamanho',
+        'pagamento',
+        'aceite',
+        'status',
+        'valor_inscricao',
+        'valor_pago',
+        'pagamento_divergente',
+        'pagbank_reference',
+        'pagbank_id',
+        'pago_em',
+    ];
+
+    protected $casts = [
+        'aceite' => 'boolean',
+        'pagamento_divergente' => 'boolean',
+        'valor_inscricao' => 'decimal:2',
+        'valor_pago' => 'decimal:2',
+        'pago_em' => 'datetime',
     ];
 }
