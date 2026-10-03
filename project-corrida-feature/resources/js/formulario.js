@@ -1,5 +1,85 @@
 document.addEventListener('DOMContentLoaded', function () {
 
+    /* ---------- Card de inscricao: informacoes <-> formulario ----------
+       O card mostra os dados do evento. So depois de clicar em
+       "Comecar inscricao" e que o formulario de 6 etapas aparece. */
+
+    const evCard = document.querySelector('[data-ev-card]');
+
+    if (evCard) {
+        const viewInfo = evCard.querySelector('[data-ev-view="info"]');
+        const viewForm = evCard.querySelector('[data-ev-view="form"]');
+        const formHead = evCard.querySelector('[data-ev-form-head]');
+        const openBtn = evCard.querySelector('[data-ev-open]');
+
+        const mostrarInfo = function () {
+            evCard.classList.remove('is-form');
+            document.body.classList.remove('is-registration');
+            if (viewInfo) viewInfo.hidden = false;
+            if (viewForm) viewForm.hidden = true;
+        };
+
+        const mostrarForm = function () {
+            evCard.classList.add('is-form');
+            document.body.classList.add('is-registration');
+            if (viewInfo) viewInfo.hidden = true;
+            if (viewForm) {
+                viewForm.hidden = false;
+                viewForm.scrollTop = 0;
+            }
+            if (formHead) formHead.focus();
+        };
+
+        // Botao "Comecar inscricao" dentro do card
+        evCard.querySelectorAll('[data-ev-open]').forEach(function (b) {
+            b.addEventListener('click', mostrarForm);
+        });
+
+        // "Voltar para o evento", breadcrumb "Inscricoes" e tecla Esc
+        document.querySelectorAll('[data-ev-close]').forEach(function (b) {
+            b.addEventListener('click', function () {
+                mostrarInfo();
+                if (openBtn) openBtn.focus();
+                const cardTop = evCard.getBoundingClientRect().top + window.scrollY
+                    - parseInt(getComputedStyle(document.documentElement).fontSize, 10) * 7;
+                window.scrollTo({ top: cardTop, behavior: 'smooth' });
+            });
+        });
+
+        document.addEventListener('keydown', function (e) {
+            if (e.key !== 'Escape' || !viewForm || viewForm.hidden) return;
+            mostrarInfo();
+            if (openBtn) openBtn.focus();
+        });
+
+        // O painel e a unica coisa visivel: prende o foco dentro dele.
+        viewForm.addEventListener('keydown', function (e) {
+            if (e.key !== 'Tab') return;
+            var focaveis = viewForm.querySelectorAll(
+                'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+            );
+            if (!focaveis.length) return;
+
+            var primeiro = focaveis[0];
+            var ultimo = focaveis[focaveis.length - 1];
+
+            if (e.shiftKey && document.activeElement === primeiro) {
+                e.preventDefault();
+                ultimo.focus();
+            } else if (!e.shiftKey && document.activeElement === ultimo) {
+                e.preventDefault();
+                primeiro.focus();
+            }
+        });
+
+        // Botoes "Inscrever-se" do site sempre trazem o card de informacoes
+        document.querySelectorAll('a[href="#inscricoes"]').forEach(function (a) {
+            a.addEventListener('click', mostrarInfo);
+        });
+
+        mostrarInfo();
+    }
+
     const form = document.getElementById('registration-form');
     if (!form) return;
 

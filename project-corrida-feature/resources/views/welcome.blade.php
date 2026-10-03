@@ -347,15 +347,129 @@
             </div>
         </section>
 
-        {{-- ================= INSCRIÇÃO ================= --}}
-        <section class="section reg" id="inscricoes">
-            <div class="container">
-                <div class="section-head section-head--center">
-                    <span class="eyebrow">Inscrições 2027</span>
-                    <h2 class="section-title">Garanta sua vaga</h2>
-                    <p class="section-sub">Faça sua inscrição para o Desafio Pedra Grande de forma rápida e segura.
-                        São seis etapas rápidas.</p>
+        {{-- ================= APRESENTACAO DO EVENTO + FORMULARIO (padrao Base44 /inscricoes) =================
+     O card tem duas visoes: "info" (dados do evento) e "form" (formulario de inscricao).
+     O formulario so aparece depois de clicar em "Comecar inscricao" dentro do card. --}}
+        <section class="ev-intro" id="inscricoes" aria-labelledby="ev-intro-title">
+            <nav class="breadcrumb" aria-label="Você está em">
+                <a href="#topo">Início</a>
+                <span aria-hidden="true">/</span>
+                <button type="button" class="breadcrumb__link" data-ev-close>Inscrições</button>
+            </nav>
+
+            <div class="ev-intro__heading">
+                <span class="eyebrow">Inscrições</span>
+                <h1 class="ev-intro__title" id="ev-intro-title">Escolha seu desafio.</h1>
+                <p class="ev-intro__sub">Faça sua inscrição para o Desafio Pedra Grande de forma rápida e segura.</p>
+            </div>
+
+            <article class="ev-card" data-ev-card>
+
+                {{-- ===== VISAO 1: INFORMACOES DO EVENTO ===== --}}
+                <div class="ev-view ev-view--info" data-ev-view="info">
+                <div class="ev-card__media">
+                    <img src="{{ asset('images/team-group.jpg') }}" alt="Largada do Desafio Pedra Grande"
+                        width="2000" height="857" loading="lazy" decoding="async">
                 </div>
+
+                <div class="ev-card__body">
+                    <span class="ev-card__flag">Evento Oficial DPG</span>
+                    <h2 class="ev-card__title">Desafio Pedra Grande</h2>
+
+                    <p class="ev-card__place">
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor"
+                            stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0" />
+                            <circle cx="12" cy="10" r="3" />
+                        </svg>
+                        Igarapé — MG
+                    </p>
+
+                    <p class="ev-card__status">
+                        <span class="pulse" aria-hidden="true"><span class="pulse__ring"></span><span class="pulse__dot"></span></span>
+                        Inscrições Abertas
+                    </p>
+
+                    <dl class="ev-facts">
+                        <div class="ev-fact">
+                            <dt>
+                                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor"
+                                    stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                    <path d="M8 2v4M16 2v4" />
+                                    <rect x="3" y="4" width="18" height="18" rx="2" />
+                                    <path d="M3 10h18" />
+                                </svg>
+                                Data
+                            </dt>
+                            <dd>25/04/2027</dd>
+                        </div>
+
+                        <div class="ev-fact">
+                            <dt>
+                                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor"
+                                    stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                    <path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0" />
+                                    <circle cx="12" cy="10" r="3" />
+                                </svg>
+                                Endereço
+                            </dt>
+                            <dd>A definir</dd>
+                        </div>
+
+                        <div class="ev-fact">
+                            <dt>
+                                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor"
+                                    stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                    <circle cx="12" cy="12" r="10" />
+                                    <path d="M12 6v6l4 2" />
+                                </svg>
+                                Encerramento das inscrições
+                            </dt>
+                            <dd>A definir</dd>
+                        </div>
+
+                        <div class="ev-fact">
+                            <dt>
+                                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor"
+                                    stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                    <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+                                    <circle cx="9" cy="7" r="4" />
+                                    <path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" />
+                                </svg>
+                                Vagas
+                            </dt>
+                            <dd>A definir</dd>
+                        </div>
+                    </dl>
+
+                    <button type="button" class="btn btn--primary ev-card__cta" data-ev-open>
+                        Começar inscrição
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M5 12h14M13 6l6 6-6 6" />
+                        </svg>
+                    </button>
+                </div>
+                </div>
+                {{-- fim da visao 1 --}}
+
+        {{-- ===== VISAO 2: FORMULARIO DE INSCRICAO ===== --}}
+                {{-- So aparece depois de clicar em "Comecar inscricao" no card. --}}
+                <div class="ev-view ev-view--form" data-ev-view="form" role="dialog" aria-modal="true"
+                    aria-label="Formulário de inscrição" hidden>
+
+                    <div class="ev-form__head" data-ev-form-head tabindex="-1">
+                        <button type="button" class="ev-form__back" data-ev-close>
+                            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <path d="M19 12H5M11 18l-6-6 6-6" />
+                            </svg>
+                            Voltar para o evento
+                        </button>
+                        <span class="eyebrow">Inscrições 2027</span>
+                        <h2 class="ev-form__title">Garanta sua vaga</h2>
+                        <p class="ev-form__sub">Preencha as seis etapas abaixo. Leva só alguns minutos.</p>
+                    </div>
 
                 <div class="reg-layout">
                     <div class="reg-card">
@@ -849,7 +963,10 @@
                         </div>
                     </aside>
                 </div>
-            </div>
+                </div>
+                {{-- fim da visao 2 --}}
+
+            </article>
         </section>
 
         {{-- ================= CTA FINAL ================= --}}
