@@ -192,6 +192,10 @@ document.addEventListener('DOMContentLoaded', function () {
         return d.replace(/(\d{2})(\d{5})(\d+)/, '($1) $2-$3');
     };
 
+    const formatarNome = (v) => v
+        .replace(/\s+/g, ' ')
+        .replace(/\S+/g, (p) => p.charAt(0).toUpperCase() + p.slice(1).toLowerCase());
+
     const formatarData = (v) => {
         if (!v) return '—';
         const p = v.split('-');
@@ -564,6 +568,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     if (elCpf) elCpf.addEventListener('input', (e) => { e.target.value = formatarCPF(e.target.value); });
     if (elTelefone) elTelefone.addEventListener('input', (e) => { e.target.value = formatarTelefone(e.target.value); });
+    if (elNome) elNome.addEventListener('input', (e) => { e.target.value = formatarNome(e.target.value); });
 
     /* ---------- Eventos ---------- */
 

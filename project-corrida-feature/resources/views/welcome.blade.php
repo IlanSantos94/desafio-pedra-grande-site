@@ -8,7 +8,7 @@
         content="Desafio Pedra Grande — Mountain Bike em Igarapé, MG. 50km e 30km de trilha, altimetria e natureza. Inscreva-se.">
 
     <title>Desafio Pedra Grande — Mountain Bike</title>
-
+    <link rel="icon" type="image/png" href="images/logo.png" sizes="35x35">
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=inter:400,500,600,700,800,inter-tight:600,700,800,900&display=swap"
         rel="stylesheet">
@@ -72,8 +72,8 @@
             <div class="hero__container">
                 <div class="hero__frame">
                     <div class="hero__media">
-                        <img src="{{ asset('images/hero-start.jpg') }}"
-                            alt="Largada do VIII Desafio Pedra Grande" width="2000" height="857"
+                        <img src="{{ asset('images/largada.jpeg') }}"
+                            alt="Largada do VIII Desafio Pedra Grande" width="3648" height="5472"
                             decoding="async" fetchpriority="high">
                     </div>
                     <div class="hero__overlay"></div>
@@ -133,8 +133,8 @@
 
                     <article class="event-card">
                         <div class="event-card__media">
-                            <img src="{{ asset('images/hero-start.jpg') }}" alt="Percurso do Desafio Pedra Grande"
-                                width="2000" height="857" loading="lazy" decoding="async">
+                            <img src="{{ asset('images/largada.jpeg') }}" alt="Percurso do Desafio Pedra Grande"
+                                width="3648" height="5472" loading="lazy" decoding="async">
                             <span class="event-card__tag event-card__tag--official">Evento oficial DPG</span>
                         </div>
                         <div class="event-card__body">
@@ -328,35 +328,10 @@
             </div>
         </section>
 
-        {{-- ================= PATROCINADORES ================= --}}
-        <section class="section section--alloy" id="patrocinadores">
-            <div class="container">
-                <div class="section-head section-head--center">
-                    <h2 class="section-title">Patrocinadores</h2>
-                    <p class="section-sub">Quem faz o Desafio Pedra Grande acontecer</p>
-                </div>
-
-                <div class="sponsors">
-                    <div class="sponsor">Apoiador</div>
-                    <div class="sponsor">Apoiador</div>
-                    <div class="sponsor">Apoiador</div>
-                    <div class="sponsor">Apoiador</div>
-                    <div class="sponsor">Apoiador</div>
-                    <div class="sponsor">Apoiador</div>
-                </div>
-            </div>
-        </section>
-
         {{-- ================= APRESENTACAO DO EVENTO + FORMULARIO (padrao Base44 /inscricoes) =================
      O card tem duas visoes: "info" (dados do evento) e "form" (formulario de inscricao).
      O formulario so aparece depois de clicar em "Comecar inscricao" dentro do card. --}}
         <section class="ev-intro" id="inscricoes" aria-labelledby="ev-intro-title">
-            <nav class="breadcrumb" aria-label="Você está em">
-                <a href="#topo">Início</a>
-                <span aria-hidden="true">/</span>
-                <button type="button" class="breadcrumb__link" data-ev-close>Inscrições</button>
-            </nav>
-
             <div class="ev-intro__heading">
                 <span class="eyebrow">Inscrições</span>
                 <h1 class="ev-intro__title" id="ev-intro-title">Escolha seu desafio.</h1>
@@ -368,8 +343,8 @@
                 {{-- ===== VISAO 1: INFORMACOES DO EVENTO ===== --}}
                 <div class="ev-view ev-view--info" data-ev-view="info">
                 <div class="ev-card__media">
-                    <img src="{{ asset('images/team-group.jpg') }}" alt="Largada do Desafio Pedra Grande"
-                        width="2000" height="857" loading="lazy" decoding="async">
+                    <img src="{{ asset('images/largada.jpeg') }}" alt="Largada do Desafio Pedra Grande"
+                        width="3648" height="5472" loading="lazy" decoding="async">
                 </div>
 
                 <div class="ev-card__body">
@@ -969,24 +944,21 @@
             </article>
         </section>
 
-        {{-- ================= CTA FINAL ================= --}}
-        <section class="section">
+        {{-- ================= PATROCINADORES ================= --}}
+        <section class="section section--alloy" id="patrocinadores">
             <div class="container">
-                <div class="cta-panel">
-                    <div class="cta-panel__media">
-                        <img src="{{ asset('images/team-wide.jpg') }}" alt="Equipe do Desafio Pedra Grande"
-                            width="1600" height="1067" loading="lazy" decoding="async">
-                    </div>
-                    <div class="cta-panel__body">
-                        <span class="eyebrow">Pronto para o desafio?</span>
-                        <h2 class="cta-panel__title">As vagas do 1º lote estão abertas</h2>
-                        <p class="cta-panel__text">Inscrição rápida, pagamento seguro via Pix ou cartão e número de
-                            atleta liberado na hora. Toda a estrutura do evento inclusa.</p>
-                        <div class="cta-panel__actions">
-                            <a href="#inscricoes" class="btn btn--primary">Garantir minha vaga</a>
-                            <a href="#o-desafio" class="btn btn--ghost">Conhecer o percurso</a>
-                        </div>
-                    </div>
+                <div class="section-head section-head--center">
+                    <h2 class="section-title">Patrocinadores</h2>
+                    <p class="section-sub">Quem faz o Desafio Pedra Grande acontecer</p>
+                </div>
+
+                <div class="sponsors">
+                    <div class="sponsor">Apoiador</div>
+                    <div class="sponsor">Apoiador</div>
+                    <div class="sponsor">Apoiador</div>
+                    <div class="sponsor">Apoiador</div>
+                    <div class="sponsor">Apoiador</div>
+                    <div class="sponsor">Apoiador</div>
                 </div>
             </div>
         </section>

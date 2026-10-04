@@ -500,37 +500,6 @@ h1, h2, h3, h4, h5 {
     }
 }
 
-.breadcrumb {
-    display: flex;
-    align-items: center;
-    gap: .5rem;
-    font-size: .75rem;
-    color: var(--dpg-ink-50);
-}
-
-.breadcrumb a {
-    transition: color var(--transition);
-}
-
-.breadcrumb a:hover {
-    color: var(--dpg-green);
-}
-
-.breadcrumb__link {
-    padding: 0;
-    background: none;
-    border: 0;
-    font: inherit;
-    font-weight: 500;
-    color: var(--dpg-ink);
-    cursor: pointer;
-    transition: color var(--transition);
-}
-
-.breadcrumb__link:hover {
-    color: var(--dpg-green);
-}
-
 .ev-intro__heading {
     max-width: 42rem;
     margin-top: 1.5rem;
@@ -1013,44 +982,6 @@ body.is-registration {
 }
 
 .sponsor:hover { color: var(--dpg-green); border-color: var(--dpg-green); }
-
-/* ===== CTA FINAL ===== */
-
-.cta-panel {
-    display: grid;
-    overflow: hidden;
-    border: 1px solid var(--dpg-rule);
-    border-radius: var(--radius-xl);
-    background: #fff;
-}
-
-@media (min-width: 1024px) { .cta-panel { grid-template-columns: 1fr 1fr; } }
-
-.cta-panel__media { position: relative; min-height: 280px; }
-
-@media (min-width: 1024px) { .cta-panel__media { min-height: 100%; } }
-
-.cta-panel__media img {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.cta-panel__body { padding: 2rem; }
-
-@media (min-width: 1024px) { .cta-panel__body { padding: 3rem; } }
-
-.cta-panel__title { margin-top: .5rem; font-size: 1.875rem; }
-
-@media (min-width: 640px) { .cta-panel__title { font-size: 2.25rem; } }
-
-.cta-panel__text { margin-top: .75rem; font-size: .875rem; line-height: 1.625; color: var(--dpg-ink-60); }
-
-@media (min-width: 640px) { .cta-panel__text { font-size: 1rem; } }
-
-.cta-panel__actions { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: 1.5rem; }
 
 /* ===== INSCRIÇÃO - STEPPER ===== */
 
