@@ -1,0 +1,7 @@
+# Dados sensiveis e credenciais - nunca versionar
+_cpfs.txt
+*.cpf
+cpfs.txt
+.env
+.env.*
+*.key
